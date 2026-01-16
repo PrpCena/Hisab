@@ -20,6 +20,23 @@ import java.util.UUID;
 @AllArgsConstructor
 @Table(name = "accounts")
 public class Account {
+  @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
+  @Column(name = "id", updatable = false, nullable = false)
+  private UUID id;
+  @Enumerated(EnumType.STRING)
+  @Column(name = "type", updatable = false, nullable = false)
+  private AccountType type;
+  @Enumerated(EnumType.STRING)
+  @Column(name = "status", updatable = false, nullable = false)
+  private AccountStatus status;
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  @JoinColumn(name = "institution_id", nullable = false)
+  private Institution institution;
+  @CreatedDate
+  @Column(name = "created", nullable = false, updatable = false)
+  private Instant created;
+  
   @Override
   public boolean equals(Object o) {
 	if (o == null || getClass() != o.getClass())
@@ -33,26 +50,5 @@ public class Account {
   public int hashCode() {
 	return Objects.hash(id, type, status, created);
   }
-  
-  @Id
-  @GeneratedValue(strategy = GenerationType.UUID)
-  @Column(name = "id",  updatable = false, nullable = false)
-  private UUID id;
-  
-  @Enumerated(EnumType.STRING)
-  @Column(name = "type",  updatable = false, nullable = false)
-  private AccountType type;
-  
-  @Enumerated(EnumType.STRING)
-  @Column(name =  "status",   updatable = false, nullable = false)
-  private AccountStatus status;
-  
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "institution_id", nullable = false)
-  private Institution institution;
-  
-  @CreatedDate
-  @Column(name = "created", nullable = false,  updatable = false)
-  private Instant created;
   
 }
