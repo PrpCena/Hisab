@@ -10,6 +10,7 @@ import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -36,6 +37,8 @@ public class Account {
   @CreatedDate
   @Column(name = "created", nullable = false, updatable = false)
   private Instant created;
+  @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Transaction> transactions;
   
   @Override
   public boolean equals(Object o) {
