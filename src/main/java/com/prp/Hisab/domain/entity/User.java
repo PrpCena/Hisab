@@ -40,12 +40,11 @@ public class User {
 	if (o == null || getClass() != o.getClass())
 	  return false;
 	User user = (User) o;
-	return Objects.equals(id, user.id) && Objects.equals(keyCloackId, user.keyCloackId) && Objects.equals(
-	  name, user.name) && Objects.equals(email, user.email) && Objects.equals(created, user.created);
+	return Objects.equals(id, user.id) && Objects.equals(keyCloackId, user.keyCloackId);
   }
   
   @Override
   public int hashCode() {
-	return Objects.hash(id, keyCloackId, name, email, created);
+	return getClass().hashCode();
   }
 }

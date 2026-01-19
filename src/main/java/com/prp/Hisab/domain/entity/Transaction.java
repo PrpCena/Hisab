@@ -35,12 +35,11 @@ public class Transaction {
 	if (o == null || getClass() != o.getClass())
 	  return false;
 	Transaction that = (Transaction) o;
-	return Objects.equals(id, that.id) && Objects.equals(description, that.description) && Objects.equals(
-	  amount, that.amount) && Objects.equals(date, that.date);
+	return Objects.equals(id, that.id);
   }
   
   @Override
   public int hashCode() {
-	return Objects.hash(id, description, amount, date);
+	return getClass().hashCode();
   }
 }

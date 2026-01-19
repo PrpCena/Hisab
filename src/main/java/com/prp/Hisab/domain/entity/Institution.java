@@ -40,13 +40,11 @@ public class Institution {
 	if (o == null || getClass() != o.getClass())
 	  return false;
 	Institution that = (Institution) o;
-	return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(created, that.created);
+	return Objects.equals(id, that.id);
   }
   
   @Override
   public int hashCode() {
-	return Objects.hash(id, name, created);
+	return getClass().hashCode();
   }
-  
-  
 }

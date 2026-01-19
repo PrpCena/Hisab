@@ -45,13 +45,11 @@ public class Account {
 	if (o == null || getClass() != o.getClass())
 	  return false;
 	Account account = (Account) o;
-	return Objects.equals(id, account.id) && type == account.type && status == account.status && Objects.equals(
-	  created, account.created);
+	return Objects.equals(id, account.id);
   }
   
   @Override
   public int hashCode() {
-	return Objects.hash(id, type, status, created);
+    return getClass().hashCode();
   }
-  
 }

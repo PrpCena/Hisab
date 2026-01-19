@@ -32,22 +32,21 @@ public class Tag {
   @ManyToMany(mappedBy = "parents", fetch = FetchType.LAZY)
   private Set<Tag> children;
   
-  
   @Override
   public boolean equals(Object o) {
 	if (o == null || getClass() != o.getClass())
 	  return false;
 	Tag tag = (Tag) o;
-	return Objects.equals(id, tag.id) && Objects.equals(name, tag.name) && Objects.equals(created, tag.created);
+	return Objects.equals(id, tag.id);
   }
   
   @Override
   public int hashCode() {
-	return Objects.hash(id, name, created);
+	return getClass().hashCode();
   }
   
   public void addChild(Tag child) {
-	if(child != this){
+	if (child != this) {
 	  this.children.add(child);
 	  child
 		.getParents()
@@ -56,7 +55,7 @@ public class Tag {
   }
   
   public void removeChild(Tag child) {
-	if(child != this){
+	if (child != this) {
 	  this.children.remove(child);
 	  child
 		.getParents()
