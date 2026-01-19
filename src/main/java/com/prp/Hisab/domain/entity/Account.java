@@ -3,10 +3,7 @@ package com.prp.Hisab.domain.entity;
 import com.prp.Hisab.domain.enums.AccountStatus;
 import com.prp.Hisab.domain.enums.AccountType;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.Instant;
@@ -19,6 +16,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Table(name = "accounts")
 public class Account {
   @Id
