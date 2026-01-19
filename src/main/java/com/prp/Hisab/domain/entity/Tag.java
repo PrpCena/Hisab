@@ -47,12 +47,20 @@ public class Tag {
   }
   
   public void addChild(Tag child) {
-	this.children.add(child);
-	child.getParents().add(this);
+	if(child != this){
+	  this.children.add(child);
+	  child
+		.getParents()
+		.add(this);
+	}
   }
   
   public void removeChild(Tag child) {
-	this.children.remove(child);
-	child.getParents().remove(this);
+	if(child != this){
+	  this.children.remove(child);
+	  child
+		.getParents()
+		.remove(this);
+	}
   }
 }
