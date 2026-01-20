@@ -2,9 +2,11 @@ package com.prp.Hisab.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.resource.transaction.spi.TransactionStatus;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -25,10 +27,12 @@ public class Transaction {
   @Column(name = "amount", nullable = false, precision = 19, scale = 4)
   private BigDecimal amount;
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "account_id", nullable = false)
+  @JoinColumn(name = "account", nullable = false)
   private Account account;
   @Column(name = "date", nullable = false)
   private LocalDate date;
+  @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<TransactionAllocation> transactionAllocations;
   
   @Override
   public boolean equals(Object o) {

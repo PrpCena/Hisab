@@ -5,6 +5,7 @@ import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -31,6 +32,8 @@ public class Tag {
   private Set<Tag> parents;
   @ManyToMany(mappedBy = "parents", fetch = FetchType.LAZY)
   private Set<Tag> children;
+  @OneToMany(mappedBy = "tag", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<TransactionAllocation> transactionAllocations;
   
   @Override
   public boolean equals(Object o) {

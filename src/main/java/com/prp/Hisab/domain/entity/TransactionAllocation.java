@@ -15,19 +15,15 @@ import java.util.UUID;
 @Builder
 @Table(name = "transcatoion_allocations")
 public class TransactionAllocation {
-  
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
-  
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "transaction", nullable = false)
+  @JoinColumn(name = "transaction", nullable = false, updatable = false)
   private Transaction transaction;
-  
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "tag", nullable = false)
   private Tag tag;
-  
   @Column(nullable = false, precision = 19, scale = 4)
   private BigDecimal amount;
   

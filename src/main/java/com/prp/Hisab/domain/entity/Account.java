@@ -30,7 +30,7 @@ public class Account {
   @Column(name = "status", updatable = false, nullable = false)
   private AccountStatus status;
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "institution_id", nullable = false)
+  @JoinColumn(name = "institution", nullable = false)
   private Institution institution;
   @CreatedDate
   @Column(name = "created", nullable = false, updatable = false)

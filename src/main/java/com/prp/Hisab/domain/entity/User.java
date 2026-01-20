@@ -32,7 +32,7 @@ public class User {
   @CreatedDate
   @Column(name = "created", nullable = false, updatable = false)
   private Instant created;
-  @OneToMany(mappedBy = "createdBy", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Institution> institutions;
   
   @Override
