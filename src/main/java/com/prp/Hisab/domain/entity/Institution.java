@@ -25,8 +25,8 @@ public class Institution {
   @Column(name = "name", nullable = false)
   private String name;
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "user", nullable = false)
-  private User user;
+  @JoinColumn(name = "createdBy", nullable = false)
+  private User createdBy;
   @CreatedDate
   @Column(name = "created", nullable = false, updatable = false)
   private Instant created;
