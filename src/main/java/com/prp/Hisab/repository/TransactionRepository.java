@@ -1,8 +1,8 @@
 package com.prp.Hisab.repository;
 
-import com.prp.Hisab.domain.entity.Transaction;
+import com.prp.Hisab.domain.entity.TransactionEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;
 
-public interface TransactionRepository extends JpaRepository<Transaction, UUID> {}
+public interface TransactionRepository extends JpaRepository<TransactionEntity, UUID> {}

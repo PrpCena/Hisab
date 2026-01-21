@@ -17,7 +17,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Table(name = "institutions")
-public class Institution {
+public class InstitutionEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   @Column(name = "id", updatable = false, nullable = false)
@@ -26,18 +26,18 @@ public class Institution {
   private String name;
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "createdBy", nullable = false)
-  private User createdBy;
+  private UserEntity createdBy;
   @CreatedDate
   @Column(name = "created", nullable = false, updatable = false)
   private Instant created;
   @OneToMany(mappedBy = "institution", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<Account> accounts;
+  private List<AccountEntity> accounts;
   
   @Override
   public boolean equals(Object o) {
 	if (o == null || getClass() != o.getClass())
 	  return false;
-	Institution that = (Institution) o;
+	InstitutionEntity that = (InstitutionEntity) o;
 	return Objects.equals(id, that.id);
   }
   

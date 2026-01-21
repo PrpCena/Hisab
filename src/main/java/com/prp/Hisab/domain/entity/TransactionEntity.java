@@ -2,7 +2,6 @@ package com.prp.Hisab.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.resource.transaction.spi.TransactionStatus;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -17,7 +16,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 @Table(name = "transactions")
-public class Transaction {
+public class TransactionEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   @Column(name = "id", updatable = false, nullable = false)
@@ -28,17 +27,17 @@ public class Transaction {
   private BigDecimal amount;
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "account", nullable = false)
-  private Account account;
+  private AccountEntity account;
   @Column(name = "date", nullable = false)
   private LocalDate date;
   @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<TransactionAllocation> transactionAllocations;
+  private List<TransactionAllocationEntity> transactionAllocations;
   
   @Override
   public boolean equals(Object o) {
 	if (o == null || getClass() != o.getClass())
 	  return false;
-	Transaction that = (Transaction) o;
+	TransactionEntity that = (TransactionEntity) o;
 	return Objects.equals(id, that.id);
   }
   

@@ -14,16 +14,16 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Table(name = "transcatoion_allocations")
-public class TransactionAllocation {
+public class TransactionAllocationEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "transaction", nullable = false, updatable = false)
-  private Transaction transaction;
+  private TransactionEntity transaction;
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "tag", nullable = false)
-  private Tag tag;
+  private TagEntity tag;
   @Column(nullable = false, precision = 19, scale = 4)
   private BigDecimal amount;
   
@@ -31,7 +31,7 @@ public class TransactionAllocation {
   public boolean equals(Object o) {
 	if (o == null || getClass() != o.getClass())
 	  return false;
-	TransactionAllocation that = (TransactionAllocation) o;
+	TransactionAllocationEntity that = (TransactionAllocationEntity) o;
 	return Objects.equals(id, that.id);
   }
   

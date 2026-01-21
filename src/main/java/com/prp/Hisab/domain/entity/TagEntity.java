@@ -17,7 +17,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Table(name = "tags")
-public class Tag {
+public class TagEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   @Column(name = "id")
@@ -29,17 +29,17 @@ public class Tag {
   private Instant created;
   @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(name = "tag_hierarchy", joinColumns = @JoinColumn(name = "child"), inverseJoinColumns = @JoinColumn(name = "parent"))
-  private Set<Tag> parents;
+  private Set<TagEntity> parents;
   @ManyToMany(mappedBy = "parents", fetch = FetchType.LAZY)
-  private Set<Tag> children;
+  private Set<TagEntity> children;
   @OneToMany(mappedBy = "tag", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<TransactionAllocation> transactionAllocations;
+  private List<TransactionAllocationEntity> transactionAllocations;
   
   @Override
   public boolean equals(Object o) {
 	if (o == null || getClass() != o.getClass())
 	  return false;
-	Tag tag = (Tag) o;
+	TagEntity tag = (TagEntity) o;
 	return Objects.equals(id, tag.id);
   }
   
@@ -48,7 +48,7 @@ public class Tag {
 	return getClass().hashCode();
   }
   
-  public void addChild(Tag child) {
+  public void addChild(TagEntity child) {
 	if (child != this) {
 	  this.children.add(child);
 	  child
@@ -57,7 +57,7 @@ public class Tag {
 	}
   }
   
-  public void removeChild(Tag child) {
+  public void removeChild(TagEntity child) {
 	if (child != this) {
 	  this.children.remove(child);
 	  child

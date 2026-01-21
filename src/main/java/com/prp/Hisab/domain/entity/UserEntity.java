@@ -18,7 +18,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "users")
-public class User {
+public class UserEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   @Column(name = "id", updatable = false, nullable = false)
@@ -33,13 +33,13 @@ public class User {
   @Column(name = "created", nullable = false, updatable = false)
   private Instant created;
   @OneToMany(mappedBy = "createdBy", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<Institution> institutions;
+  private List<InstitutionEntity> institutions;
   
   @Override
   public boolean equals(Object o) {
 	if (o == null || getClass() != o.getClass())
 	  return false;
-	User user = (User) o;
+	UserEntity user = (UserEntity) o;
 	return Objects.equals(id, user.id) && Objects.equals(keyCloackId, user.keyCloackId);
   }
   
