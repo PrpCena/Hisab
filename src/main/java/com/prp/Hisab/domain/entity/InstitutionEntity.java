@@ -25,7 +25,7 @@ public class InstitutionEntity {
   @Column(name = "name", nullable = false)
   private String name;
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "createdBy", nullable = false)
+  @JoinColumn(name = "createdBy", nullable = false, updatable = false)
   private UserEntity createdBy;
   @CreatedDate
   @Column(name = "created", nullable = false, updatable = false)
