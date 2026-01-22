@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.time.Instant;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,5 +20,9 @@ public class Account {
   private AccountType type;
   private Institution institution;
   private List<Transaction> transactions;
+  
+  public List<Transaction> getTransactions() {
+    return Collections.unmodifiableList(transactions);
+  }
   
 }

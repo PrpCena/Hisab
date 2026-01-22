@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.time.Instant;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,5 +17,9 @@ public class Institution {
 	
 	private String name;
 	private List<Account> accounts;
-
+  
+  public List<Account> getAccounts() {
+	return Collections.unmodifiableList(accounts);
+  }
+  
 }

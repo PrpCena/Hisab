@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,4 +18,9 @@ public class Transaction {
   private Account account;
   private LocalDate date;
   private List<TransactionAllocation> transactionAllocations;
+  
+  public List<TransactionAllocation> getTransactionAllocations() {
+    return Collections.unmodifiableList(transactionAllocations);
+  }
+  
 }

@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.time.Instant;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -18,5 +19,15 @@ public class Tag {
   private Set<Tag> children;
   private List<TransactionAllocation> transactionAllocations;
   
+  public Set<Tag> getParents() {
+    return Collections.unmodifiableSet(parents);
+  }
   
+  public Set<Tag> getChildren() {
+    return Collections.unmodifiableSet(children);
+  }
+  
+  public List<TransactionAllocation> getTransactionAllocations() {
+    return Collections.unmodifiableList(transactionAllocations);
+  }
 }
