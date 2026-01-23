@@ -1,0 +1,11 @@
+package com.prp.Hisab.config;
+
+
+import org.mapstruct.InjectionStrategy;
+import org.mapstruct.MapperConfig;
+import org.mapstruct.ReportingPolicy;
+
+@MapperConfig(componentModel = "spring", // makes every mapper @Component
+  unmappedTargetPolicy = ReportingPolicy.ERROR, // reports missing field from the source
+  injectionStrategy = InjectionStrategy.CONSTRUCTOR)
+public interface GlobalMapperConfig {}
