@@ -6,5 +6,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class TagServiceImpl implements TagService {}
+public class TagServiceImpl
+  implements TagService {}
 

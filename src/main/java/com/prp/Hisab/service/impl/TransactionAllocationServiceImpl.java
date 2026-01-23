@@ -7,4 +7,5 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class TransactionAllocationServiceImpl implements TransactionAllocationService {}
+public class TransactionAllocationServiceImpl
+  implements TransactionAllocationService {}

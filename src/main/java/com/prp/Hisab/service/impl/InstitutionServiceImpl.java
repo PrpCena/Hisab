@@ -6,4 +6,5 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class InstitutionServiceImpl implements InstitutionService {}
+public class InstitutionServiceImpl
+  implements InstitutionService {}

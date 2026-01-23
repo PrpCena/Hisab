@@ -11,12 +11,12 @@ import java.util.UUID;
 @Getter
 @RequiredArgsConstructor
 public class Institution {
-	private final UUID id;
-	private final User createdBy;
-	private final Instant created;
-	
-	private String name;
-	private List<Account> accounts;
+  private final UUID id;
+  private final User createdBy;
+  private final Instant created;
+  
+  private String name;
+  private List<Account> accounts;
   
   public List<Account> getAccounts() {
 	return Collections.unmodifiableList(accounts);

@@ -20,7 +20,7 @@ public class Transaction {
   private List<TransactionAllocation> transactionAllocations;
   
   public List<TransactionAllocation> getTransactionAllocations() {
-    return Collections.unmodifiableList(transactionAllocations);
+	return Collections.unmodifiableList(transactionAllocations);
   }
   
 }
