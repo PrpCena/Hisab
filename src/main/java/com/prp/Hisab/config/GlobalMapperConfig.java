@@ -7,5 +7,5 @@ import org.mapstruct.ReportingPolicy;
 
 @MapperConfig(componentModel = "spring", // makes every mapper @Component
   unmappedTargetPolicy = ReportingPolicy.ERROR, // reports missing field from the source
-  injectionStrategy = InjectionStrategy.CONSTRUCTOR)
+  injectionStrategy = InjectionStrategy.FIELD)
 public interface GlobalMapperConfig {}
