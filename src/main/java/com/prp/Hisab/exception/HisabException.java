@@ -9,7 +9,7 @@ public abstract class HisabException
   private final HttpStatus status;
   
   
-  protected HisabException(String message, HttpStatus unauthorized) {
+  protected HisabException(String message, HttpStatus status) {
 	super(message);
 	this.status = status;
   }
