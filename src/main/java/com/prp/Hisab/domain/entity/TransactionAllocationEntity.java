@@ -15,7 +15,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "transcatoion_allocations")
+@Table(name = "transaction_allocations")
 public class TransactionAllocationEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
