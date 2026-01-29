@@ -1,25 +1,25 @@
 package com.prp.Hisab.domain;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.Builder;
+import lombok.Value;
 
 import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-@RequiredArgsConstructor
-@Getter
+@Value
+@Builder
 public class User {
-  private final UUID id;
-  private final String keyCloackId;
-  private final Instant created;
-  private String name;
-  private String email;
-  private List<Institution> institutions;
+  UUID id;
+  String keyCloackId;
+  Instant created;
+  String name;
+  String email;
+  List<Institution> institutions;
   
   public List<Institution> getInstitutions() {
-	return Collections.unmodifiableList(institutions);
+	return institutions == null ? Collections.emptyList() : Collections.unmodifiableList(institutions);
   }
   
 }

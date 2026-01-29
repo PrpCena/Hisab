@@ -2,27 +2,26 @@ package com.prp.Hisab.domain;
 
 import com.prp.Hisab.domain.enums.AccountStatus;
 import com.prp.Hisab.domain.enums.AccountType;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.Builder;
+import lombok.Value;
 
 import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-@Getter
-@RequiredArgsConstructor
+@Value
+@Builder
 public class Account {
-  private final UUID id;
-  private final Instant created;
-  
-  private AccountStatus status;
-  private AccountType type;
-  private Institution institution;
-  private List<Transaction> transactions;
+  UUID id;
+  Instant created;
+  AccountStatus status;
+  AccountType type;
+  Institution institution;
+  List<Transaction> transactions;
   
   public List<Transaction> getTransactions() {
-	return Collections.unmodifiableList(transactions);
+	return transactions == null ? Collections.emptyList() : Collections.unmodifiableList(transactions);
   }
   
 }

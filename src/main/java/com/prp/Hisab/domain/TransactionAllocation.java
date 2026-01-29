@@ -1,17 +1,17 @@
 package com.prp.Hisab.domain;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.Builder;
+import lombok.Value;
 
 import java.math.BigDecimal;
 import java.util.UUID;
 
-@Getter
-@RequiredArgsConstructor
+@Value
+@Builder
 public class TransactionAllocation {
-  private final UUID id;
-  private Transaction transaction;
-  private Tag tag;
-  private BigDecimal amount;
+  UUID id;
+  Transaction transaction;
+  Tag tag;
+  BigDecimal amount;
   
 }

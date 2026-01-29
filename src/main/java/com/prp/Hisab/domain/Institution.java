@@ -1,25 +1,25 @@
 package com.prp.Hisab.domain;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.Builder;
+import lombok.Value;
 
 import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-@Getter
-@RequiredArgsConstructor
+@Value
+@Builder
 public class Institution {
-  private final UUID id;
-  private final User createdBy;
-  private final Instant created;
+  UUID id;
+  User createdBy;
+  Instant created;
   
-  private String name;
-  private List<Account> accounts;
+  String name;
+  List<Account> accounts;
   
   public List<Account> getAccounts() {
-	return Collections.unmodifiableList(accounts);
+	return accounts == null ? Collections.emptyList() : Collections.unmodifiableList(accounts);
   }
   
 }

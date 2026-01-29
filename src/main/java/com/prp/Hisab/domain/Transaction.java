@@ -1,7 +1,7 @@
 package com.prp.Hisab.domain;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.Builder;
+import lombok.Value;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -9,18 +9,19 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-@Getter
-@RequiredArgsConstructor
+@Value
+@Builder
 public class Transaction {
-  private final UUID id;
-  private String description;
-  private BigDecimal amount;
-  private Account account;
-  private LocalDate date;
-  private List<TransactionAllocation> transactionAllocations;
+  UUID id;
+  String description;
+  BigDecimal amount;
+  Account account;
+  LocalDate date;
+  List<TransactionAllocation> transactionAllocations;
   
   public List<TransactionAllocation> getTransactionAllocations() {
-	return Collections.unmodifiableList(transactionAllocations);
+	return transactionAllocations == null ? Collections.emptyList() : Collections.unmodifiableList(
+	  transactionAllocations);
   }
   
 }

@@ -1,7 +1,7 @@
 package com.prp.Hisab.domain;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.Builder;
+import lombok.Value;
 
 import java.time.Instant;
 import java.util.Collections;
@@ -9,25 +9,26 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-@Getter
-@RequiredArgsConstructor
+@Builder
+@Value
 public class Tag {
-  private final UUID id;
-  private final Instant created;
-  private String name;
-  private Set<Tag> parents;
-  private Set<Tag> children;
-  private List<TransactionAllocation> transactionAllocations;
+  UUID id;
+  Instant created;
+  String name;
+  Set<Tag> parents;
+  Set<Tag> children;
+  List<TransactionAllocation> transactionAllocations;
   
   public Set<Tag> getParents() {
-	return Collections.unmodifiableSet(parents);
+	return parents == null ? Collections.emptySet() : Collections.unmodifiableSet(parents);
   }
   
   public Set<Tag> getChildren() {
-	return Collections.unmodifiableSet(children);
+	return children == null ? Collections.emptySet() : Collections.unmodifiableSet(children);
   }
   
   public List<TransactionAllocation> getTransactionAllocations() {
-	return Collections.unmodifiableList(transactionAllocations);
+	return transactionAllocations == null ? Collections.emptyList() : Collections.unmodifiableList(
+	  transactionAllocations);
   }
 }
