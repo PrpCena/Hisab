@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 
 @Mapper(config = GlobalMapperConfig.class, uses = {AccountMapper.class})
 public interface InstitutionMapper {
-  Institution toDomain(InstitutionEntity entity);
-  
-  InstitutionEntity toEntity(Institution domain);
+    Institution toDomain(InstitutionEntity entity);
+    
+    InstitutionEntity toEntity(Institution domain);
 }

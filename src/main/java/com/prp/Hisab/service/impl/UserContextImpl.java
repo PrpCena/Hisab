@@ -14,25 +14,26 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class UserContextImpl implements UserContext {
-  
-  private final UserService userService;
-
-  
-  @Override
-  @Transactional
-  public User getCurrentUser() {
-	Authentication authentication = SecurityContextHolder
-									  .getContext().getAuthentication();
-	
-	if (authentication == null || !(authentication.getPrincipal() instanceof Jwt jwt)) {
-	  throw new UserNotAuthenticatedException("User can not be authenticated");
-	}
-	
-	String keycloakId = jwt.getClaimAsString("sub");
-	String email = jwt.getClaimAsString("email");
-	String name = jwt.getClaimAsString("name");
-	
-	return userService.getOrCreateUser(keycloakId, email, name);
-  }
-  
+    
+    private final UserService userService;
+    
+    
+    @Override
+    @Transactional
+    public User getCurrentUser() {
+        Authentication authentication = SecurityContextHolder
+                .getContext()
+                .getAuthentication();
+        
+        if (authentication == null || !(authentication.getPrincipal() instanceof Jwt jwt)) {
+            throw new UserNotAuthenticatedException("User can not be authenticated");
+        }
+        
+        String keycloakId = jwt.getClaimAsString("sub");
+        String email = jwt.getClaimAsString("email");
+        String name = jwt.getClaimAsString("name");
+        
+        return userService.getOrCreateUser(keycloakId, email, name);
+    }
+    
 }

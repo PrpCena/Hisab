@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 
 @Mapper(config = GlobalMapperConfig.class, uses = {TransactionMapper.class})
 public interface AccountMapper {
-  Account toDomain(AccountEntity entity);
-  
-  AccountEntity toEntity(Account domain);
+    Account toDomain(AccountEntity entity);
+    
+    AccountEntity toEntity(Account domain);
 }

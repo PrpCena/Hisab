@@ -11,22 +11,22 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl
-  implements UserService {
-  
-  private final UserMapper userMapper;
-  private final UserRepository userRepository;
-  
-  @Override
-  public User getOrCreateUser(String keyCloackId, String email, String name) {
-	return userRepository
-			 .findByKeyCloackId(keyCloackId)
-			 .map(userMapper::toDomain)
-			 .orElseGet(() -> {
-			   UserEntity newUser = new UserEntity();
-			   newUser.setKeyCloackId(keyCloackId);
-			   newUser.setEmail(email);
-			   newUser.setName(name);
-			   return userMapper.toDomain(userRepository.save(newUser));
-			 });
-  }
+        implements UserService {
+    
+    private final UserMapper userMapper;
+    private final UserRepository userRepository;
+    
+    @Override
+    public User getOrCreateUser(String keyCloackId, String email, String name) {
+        return userRepository
+                .findByKeyCloackId(keyCloackId)
+                .map(userMapper::toDomain)
+                .orElseGet(() -> {
+                    UserEntity newUser = new UserEntity();
+                    newUser.setKeyCloackId(keyCloackId);
+                    newUser.setEmail(email);
+                    newUser.setName(name);
+                    return userMapper.toDomain(userRepository.save(newUser));
+                });
+    }
 }

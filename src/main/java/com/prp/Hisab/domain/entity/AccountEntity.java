@@ -21,35 +21,35 @@ import java.util.UUID;
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "accounts")
 public class AccountEntity {
-  @Id
-  @GeneratedValue(strategy = GenerationType.UUID)
-  @Column(name = "id", updatable = false, nullable = false)
-  private UUID id;
-  @Enumerated(EnumType.STRING)
-  @Column(name = "type", updatable = false, nullable = false)
-  private AccountType type;
-  @Enumerated(EnumType.STRING)
-  @Column(name = "status", updatable = false, nullable = false)
-  private AccountStatus status;
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "institution", nullable = false)
-  private InstitutionEntity institution;
-  @CreatedDate
-  @Column(name = "created", nullable = false, updatable = false)
-  private Instant created;
-  @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<TransactionEntity> transactions;
-  
-  @Override
-  public boolean equals(Object o) {
-	if (o == null || getClass() != o.getClass())
-	  return false;
-	AccountEntity account = (AccountEntity) o;
-	return Objects.equals(id, account.id);
-  }
-  
-  @Override
-  public int hashCode() {
-	return getClass().hashCode();
-  }
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id", updatable = false, nullable = false)
+    private UUID id;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type", updatable = false, nullable = false)
+    private AccountType type;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", updatable = false, nullable = false)
+    private AccountStatus status;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "institution", nullable = false)
+    private InstitutionEntity institution;
+    @CreatedDate
+    @Column(name = "created", nullable = false, updatable = false)
+    private Instant created;
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TransactionEntity> transactions;
+    
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass())
+            return false;
+        AccountEntity account = (AccountEntity) o;
+        return Objects.equals(id, account.id);
+    }
+    
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

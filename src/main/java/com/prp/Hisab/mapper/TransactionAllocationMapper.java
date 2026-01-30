@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 
 @Mapper(config = GlobalMapperConfig.class, uses = {TagMapper.class, TransactionMapper.class})
 public interface TransactionAllocationMapper {
-  TransactionAllocation toDomain(TransactionAllocationEntity entity);
-  
-  TransactionAllocationEntity toEntity(TransactionAllocation entity);
+    TransactionAllocation toDomain(TransactionAllocationEntity entity);
+    
+    TransactionAllocationEntity toEntity(TransactionAllocation entity);
 }

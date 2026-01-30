@@ -7,7 +7,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface UserRepository
-  extends JpaRepository<UserEntity, UUID> {
-  Optional<UserEntity> findByKeyCloackId(String keyCloackId);
+        extends JpaRepository<UserEntity, UUID> {
+    Optional<UserEntity> findByKeyCloackId(String keyCloackId);
 }
 

@@ -11,15 +11,15 @@ import java.util.UUID;
 @Value
 @Builder
 public class Institution {
-  UUID id;
-  User createdBy;
-  Instant created;
-  
-  String name;
-  List<Account> accounts;
-  
-  public List<Account> getAccounts() {
-	return accounts == null ? Collections.emptyList() : Collections.unmodifiableList(accounts);
-  }
-  
+    UUID id;
+    User createdBy;
+    Instant created;
+    
+    String name;
+    List<Account> accounts;
+    
+    public List<Account> getAccounts() {
+        return accounts == null ? Collections.emptyList() : Collections.unmodifiableList(accounts);
+    }
+    
 }

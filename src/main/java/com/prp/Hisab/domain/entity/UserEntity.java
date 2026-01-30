@@ -21,32 +21,32 @@ import java.util.UUID;
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "users")
 public class UserEntity {
-  @Id
-  @GeneratedValue(strategy = GenerationType.UUID)
-  @Column(name = "id", updatable = false, nullable = false)
-  private UUID id;
-  @Column(name = "key_cloack_id", updatable = false, nullable = false)
-  private String keyCloackId;
-  @Column(name = "name", nullable = false)
-  private String name;
-  @Column(name = "email", nullable = false)
-  private String email;
-  @CreatedDate
-  @Column(name = "created", nullable = false, updatable = false)
-  private Instant created;
-  @OneToMany(mappedBy = "createdBy", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<InstitutionEntity> institutions;
-  
-  @Override
-  public boolean equals(Object o) {
-	if (o == null || getClass() != o.getClass())
-	  return false;
-	UserEntity user = (UserEntity) o;
-	return Objects.equals(id, user.id) && Objects.equals(keyCloackId, user.keyCloackId);
-  }
-  
-  @Override
-  public int hashCode() {
-	return getClass().hashCode();
-  }
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id", updatable = false, nullable = false)
+    private UUID id;
+    @Column(name = "key_cloack_id", updatable = false, nullable = false)
+    private String keyCloackId;
+    @Column(name = "name", nullable = false)
+    private String name;
+    @Column(name = "email", nullable = false)
+    private String email;
+    @CreatedDate
+    @Column(name = "created", nullable = false, updatable = false)
+    private Instant created;
+    @OneToMany(mappedBy = "createdBy", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<InstitutionEntity> institutions;
+    
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass())
+            return false;
+        UserEntity user = (UserEntity) o;
+        return Objects.equals(id, user.id) && Objects.equals(keyCloackId, user.keyCloackId);
+    }
+    
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

@@ -9,9 +9,9 @@ import java.util.UUID;
 @Value
 @Builder
 public class TransactionAllocation {
-  UUID id;
-  Transaction transaction;
-  Tag tag;
-  BigDecimal amount;
-  
+    UUID id;
+    Transaction transaction;
+    Tag tag;
+    BigDecimal amount;
+    
 }

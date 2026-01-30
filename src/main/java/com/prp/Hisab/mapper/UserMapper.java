@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 
 @Mapper(config = GlobalMapperConfig.class, uses = {InstitutionMapper.class})
 public interface UserMapper {
-  User toDomain(UserEntity entity);
-  
-  UserEntity toEntity(User domain);
+    User toDomain(UserEntity entity);
+    
+    UserEntity toEntity(User domain);
 }

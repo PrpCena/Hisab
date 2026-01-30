@@ -12,16 +12,16 @@ import java.util.UUID;
 @Value
 @Builder
 public class Transaction {
-  UUID id;
-  String description;
-  BigDecimal amount;
-  Account account;
-  LocalDate date;
-  List<TransactionAllocation> transactionAllocations;
-  
-  public List<TransactionAllocation> getTransactionAllocations() {
-	return transactionAllocations == null ? Collections.emptyList() : Collections.unmodifiableList(
-	  transactionAllocations);
-  }
-  
+    UUID id;
+    String description;
+    BigDecimal amount;
+    Account account;
+    LocalDate date;
+    List<TransactionAllocation> transactionAllocations;
+    
+    public List<TransactionAllocation> getTransactionAllocations() {
+        return transactionAllocations == null ? Collections.emptyList() : Collections.unmodifiableList(
+                transactionAllocations);
+    }
+    
 }

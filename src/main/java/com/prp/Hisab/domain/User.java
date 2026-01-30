@@ -11,15 +11,15 @@ import java.util.UUID;
 @Value
 @Builder
 public class User {
-  UUID id;
-  String keyCloackId;
-  Instant created;
-  String name;
-  String email;
-  List<Institution> institutions;
-  
-  public List<Institution> getInstitutions() {
-	return institutions == null ? Collections.emptyList() : Collections.unmodifiableList(institutions);
-  }
-  
+    UUID id;
+    String keyCloackId;
+    Instant created;
+    String name;
+    String email;
+    List<Institution> institutions;
+    
+    public List<Institution> getInstitutions() {
+        return institutions == null ? Collections.emptyList() : Collections.unmodifiableList(institutions);
+    }
+    
 }

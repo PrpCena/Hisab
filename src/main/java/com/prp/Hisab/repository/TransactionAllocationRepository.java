@@ -6,4 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.UUID;
 
 public interface TransactionAllocationRepository
-  extends JpaRepository<TransactionAllocationEntity, UUID> {}
+        extends JpaRepository<TransactionAllocationEntity, UUID> {
+}

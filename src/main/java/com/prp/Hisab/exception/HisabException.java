@@ -5,12 +5,12 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 public abstract class HisabException
-  extends RuntimeException {
-  private final HttpStatus status;
-  
-  
-  protected HisabException(String message, HttpStatus status) {
-	super(message);
-	this.status = status;
-  }
+        extends RuntimeException {
+    private final HttpStatus status;
+    
+    
+    protected HisabException(String message, HttpStatus status) {
+        super(message);
+        this.status = status;
+    }
 }

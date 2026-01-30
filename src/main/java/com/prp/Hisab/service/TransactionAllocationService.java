@@ -1,3 +1,4 @@
 package com.prp.Hisab.service;
 
-public interface TransactionAllocationService {}
+public interface TransactionAllocationService {
+}

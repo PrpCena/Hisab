@@ -13,15 +13,15 @@ import java.util.UUID;
 @Value
 @Builder
 public class Account {
-  UUID id;
-  Instant created;
-  AccountStatus status;
-  AccountType type;
-  Institution institution;
-  List<Transaction> transactions;
-  
-  public List<Transaction> getTransactions() {
-	return transactions == null ? Collections.emptyList() : Collections.unmodifiableList(transactions);
-  }
-  
+    UUID id;
+    Instant created;
+    AccountStatus status;
+    AccountType type;
+    Institution institution;
+    List<Transaction> transactions;
+    
+    public List<Transaction> getTransactions() {
+        return transactions == null ? Collections.emptyList() : Collections.unmodifiableList(transactions);
+    }
+    
 }

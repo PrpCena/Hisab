@@ -16,38 +16,37 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
-  
-  @Bean
-  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-	http
-	  .csrf(AbstractHttpConfigurer::disable)
-	  .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-	  .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-	  .authorizeHttpRequests(auth -> auth
-									   .requestMatchers("/actuator/health")
-									   .permitAll()
-									   .requestMatchers("/api/admin/**")
-									   .hasRole("admin")
-									   .anyRequest()
-									   .authenticated())
-	  .oauth2ResourceServer(
-		oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(new KeycloakJwtAuthenticationConverter())));
-	
-	return http.build();
-  }
-  
-  @Bean
-  public UrlBasedCorsConfigurationSource corsConfigurationSource() {
-	CorsConfiguration config = new CorsConfiguration();
-	config.setAllowCredentials(true);
-	config.addAllowedOrigin("http://localhost:3000"); // Allow Frontend
-	config.addAllowedHeader("*");
-	config.addAllowedMethod("*");
-	
-	UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-	source.registerCorsConfiguration("/**", config);
-	return source;
-  }
-  
-  
+    
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.csrf(AbstractHttpConfigurer::disable)
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .sessionManagement(
+                        sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/actuator/health")
+                        .permitAll()
+                        .requestMatchers("/api/admin/**")
+                        .hasRole("admin")
+                        .anyRequest()
+                        .authenticated())
+                .oauth2ResourceServer(oauth2 -> oauth2.jwt(
+                        jwt -> jwt.jwtAuthenticationConverter(new KeycloakJwtAuthenticationConverter())));
+        
+        return http.build();
+    }
+    
+    @Bean
+    public UrlBasedCorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        config.addAllowedOrigin("http://localhost:3000"); // Allow Frontend
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("*");
+        
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+        return source;
+    }
+    
+    
 }
