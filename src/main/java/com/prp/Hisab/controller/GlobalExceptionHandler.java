@@ -11,6 +11,7 @@ import java.time.Instant;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     
+    @ExceptionHandler(UserNotAuthenticatedException.class)
     public ResponseEntity<ApiErrorResponse> handleException(HisabException ex, HttpServletRequest request) {
         ApiErrorResponse errorResponse = new ApiErrorResponse(ex.getStatus()
                 .value(), ex.getStatus()
