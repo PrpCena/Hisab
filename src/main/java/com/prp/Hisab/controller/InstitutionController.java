@@ -2,14 +2,12 @@ package com.prp.Hisab.controller;
 
 import com.prp.Hisab.domain.dto.request.CreateInstitutionRequest;
 import com.prp.Hisab.domain.dto.response.CreateInstitutionResponse;
+import com.prp.Hisab.domain.dto.response.ListInstitutionResponse;
 import com.prp.Hisab.service.InstitutionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,6 +21,14 @@ public class InstitutionController {
       @Valid @RequestBody CreateInstitutionRequest request) {
 
     CreateInstitutionResponse response = institutionService.createInstitution(request);
+
+    return ResponseEntity.ok(response);
+  }
+
+  @GetMapping
+  ResponseEntity<ListInstitutionResponse> listInstitutions() {
+
+    ListInstitutionResponse response = institutionService.listInstitutions();
 
     return ResponseEntity.ok(response);
   }
