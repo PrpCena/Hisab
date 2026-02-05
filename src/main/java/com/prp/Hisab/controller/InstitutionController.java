@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v1/institutions")
@@ -31,5 +33,12 @@ public class InstitutionController {
     ListInstitutionResponse response = institutionService.listInstitutions();
 
     return ResponseEntity.ok(response);
+  }
+  
+  @DeleteMapping("/{id}")
+  ResponseEntity<Void> deleteInstitution(@PathVariable UUID id) {
+    institutionService.deleteInstitution(id);
+    
+    return ResponseEntity.ok().build();
   }
 }

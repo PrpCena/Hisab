@@ -6,6 +6,7 @@ import com.prp.Hisab.domain.dto.request.CreateInstitutionRequest;
 import com.prp.Hisab.domain.dto.response.CreateInstitutionResponse;
 import com.prp.Hisab.domain.dto.response.ListInstitutionResponse;
 import com.prp.Hisab.domain.entity.InstitutionEntity;
+import com.prp.Hisab.exception.ResourceNotFoundException;
 import com.prp.Hisab.mapper.InstitutionMapper;
 import com.prp.Hisab.repository.InstitutionRepository;
 import com.prp.Hisab.service.InstitutionService;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -51,5 +53,17 @@ public class InstitutionServiceImpl implements InstitutionService {
             .toList();
 
     return new ListInstitutionResponse(institutionDtos);
+  }
+
+  @Override
+  @Transactional
+  public void deleteInstitution(UUID id) {
+    User user = userContext.getCurrentUser();
+
+    int isDeleted = institutionRepository.deleteByIdAndCreatedById(id, user.getId());
+
+    if (isDeleted == 0) {
+      throw new ResourceNotFoundException("Institution not found");
+    }
   }
 }

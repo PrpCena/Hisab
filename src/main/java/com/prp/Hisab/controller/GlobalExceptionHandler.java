@@ -2,6 +2,7 @@ package com.prp.Hisab.controller;
 
 import com.prp.Hisab.domain.dto.ApiErrorResponse;
 import com.prp.Hisab.exception.HisabException;
+import com.prp.Hisab.exception.ResourceNotFoundException;
 import com.prp.Hisab.exception.UserNotAuthenticatedException;
 import jakarta.servlet.http.HttpServletRequest;
 import java.time.Instant;
@@ -47,5 +48,19 @@ public class GlobalExceptionHandler {
             Instant.now());
 
     return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler(ResourceNotFoundException.class)
+  @ResponseStatus(HttpStatus.NOT_FOUND)
+  public ResponseEntity<ApiErrorResponse> handleResourceNotFoundException(
+      ResourceNotFoundException ex, HttpServletRequest request) {
+    ApiErrorResponse errorResponse =
+        new ApiErrorResponse(
+            ex.getStatus().value(),
+            ex.getStatus().getReasonPhrase(),
+            ex.getMessage(),
+            request.getRequestURI(),
+            Instant.now());
+    return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
   }
 }
