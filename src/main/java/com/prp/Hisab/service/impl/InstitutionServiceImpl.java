@@ -25,6 +25,7 @@ public class InstitutionServiceImpl implements InstitutionService {
   private final InstitutionMapper institutionMapper;
 
   @Override
+  @Transactional
   public CreateInstitutionResponse createInstitution(CreateInstitutionRequest request) {
     User user = userContext.getCurrentUser();
 
