@@ -16,7 +16,7 @@ public class Transaction {
   BigDecimal amount;
   UUID accountId;
   LocalDate date;
-  private final Set<UUID> tagIds = new HashSet<>();
+  Set<UUID> tagIds = new HashSet<>();
 
   public void addTag(UUID tagId) {
     tagIds.add(tagId);
