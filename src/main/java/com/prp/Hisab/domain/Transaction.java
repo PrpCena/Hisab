@@ -1,27 +1,32 @@
 package com.prp.Hisab.domain;
 
-import lombok.Builder;
-import lombok.Value;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Collections;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
+import lombok.Builder;
+import lombok.Value;
 
 @Value
 @Builder
 public class Transaction {
-    UUID id;
-    String description;
-    BigDecimal amount;
-    Account account;
-    LocalDate date;
-    List<TransactionAllocation> transactionAllocations;
-    
-    public List<TransactionAllocation> getTransactionAllocations() {
-        return transactionAllocations == null ? Collections.emptyList() : Collections.unmodifiableList(
-                transactionAllocations);
-    }
-    
+  UUID id;
+  String description;
+  BigDecimal amount;
+  UUID accountId;
+  LocalDate date;
+  private final Set<UUID> tagIds = new HashSet<>();
+
+  public void addTag(UUID tagId) {
+    tagIds.add(tagId);
+  }
+
+  public void removeTag(UUID tagId) {
+    tagIds.remove(tagId);
+  }
+
+  public Set<UUID> tagIds() {
+    return Set.copyOf(tagIds);
+  }
 }
