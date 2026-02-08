@@ -11,12 +11,11 @@ import com.prp.Hisab.mapper.InstitutionMapper;
 import com.prp.Hisab.repository.InstitutionRepository;
 import com.prp.Hisab.service.InstitutionService;
 import com.prp.Hisab.service.UserContext;
+import java.util.List;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -31,13 +30,14 @@ public class InstitutionServiceImpl implements InstitutionService {
   public CreateInstitutionResponse createInstitution(CreateInstitutionRequest request) {
     User user = userContext.getCurrentUser();
 
-    Institution institution = Institution.builder().name(request.name()).createdBy(user).build();
+    Institution institution =
+        Institution.builder().name(request.name()).createdById(user.getId()).build();
 
     InstitutionEntity institutionEntity = institutionMapper.toEntity(institution);
 
     institutionEntity = institutionRepository.save(institutionEntity);
 
-    return institutionMapper.toResponse(institutionMapper.toDomain(institutionEntity));
+    return new CreateInstitutionResponse(institutionEntity.getId(), institutionEntity.getName());
   }
 
   @Override
