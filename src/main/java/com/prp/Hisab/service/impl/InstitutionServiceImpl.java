@@ -6,6 +6,7 @@ import com.prp.Hisab.domain.dto.request.CreateInstitutionRequest;
 import com.prp.Hisab.domain.dto.response.CreateInstitutionResponse;
 import com.prp.Hisab.domain.dto.response.ListInstitutionResponse;
 import com.prp.Hisab.domain.entity.InstitutionEntity;
+import com.prp.Hisab.domain.entity.UserEntity;
 import com.prp.Hisab.exception.ResourceNotFoundException;
 import com.prp.Hisab.mapper.InstitutionMapper;
 import com.prp.Hisab.repository.InstitutionRepository;
@@ -13,6 +14,9 @@ import com.prp.Hisab.service.InstitutionService;
 import com.prp.Hisab.service.UserContext;
 import java.util.List;
 import java.util.UUID;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +28,9 @@ public class InstitutionServiceImpl implements InstitutionService {
   private final UserContext userContext;
   private final InstitutionRepository institutionRepository;
   private final InstitutionMapper institutionMapper;
+  
+  @PersistenceContext
+  private EntityManager entityManager;
 
   @Override
   @Transactional
@@ -31,9 +38,13 @@ public class InstitutionServiceImpl implements InstitutionService {
     User user = userContext.getCurrentUser();
 
     Institution institution =
-        Institution.builder().name(request.name()).createdById(user.getId()).build();
+        Institution.builder().name(request.name()).build();
 
     InstitutionEntity institutionEntity = institutionMapper.toEntity(institution);
+    
+    institutionEntity.setCreatedBy(
+            entityManager.getReference(UserEntity.class, user.getId())
+    );
 
     institutionEntity = institutionRepository.save(institutionEntity);
 
