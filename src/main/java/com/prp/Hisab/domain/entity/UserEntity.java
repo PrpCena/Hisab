@@ -34,9 +34,7 @@ public class UserEntity {
     @CreatedDate
     @Column(name = "created", nullable = false, updatable = false)
     private Instant created;
-    @OneToMany(mappedBy = "createdBy", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<InstitutionEntity> institutions;
-    
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass())

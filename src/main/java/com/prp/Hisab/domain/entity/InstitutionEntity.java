@@ -32,9 +32,7 @@ public class InstitutionEntity {
     @CreatedDate
     @Column(name = "created", nullable = false, updatable = false)
     private Instant created;
-    @OneToMany(mappedBy = "institution", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<AccountEntity> accounts;
-    
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass())

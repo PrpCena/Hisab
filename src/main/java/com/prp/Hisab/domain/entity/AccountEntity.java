@@ -37,9 +37,7 @@ public class AccountEntity {
     @CreatedDate
     @Column(name = "created", nullable = false, updatable = false)
     private Instant created;
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<TransactionEntity> transactions;
-    
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass())
