@@ -75,4 +75,17 @@ public class AccountServiceImpl implements AccountService {
 
     return new ListAccountResponse(accountDtos);
   }
+
+  @Override
+  @Transactional
+  public void deleteAccount(UUID accountId) {
+    User user = userContext.getCurrentUser();
+
+    AccountEntity accountEntity =
+        accountRepository
+            .findByIdAndInstitution_CreatedBy_Id(accountId, user.getId())
+            .orElseThrow(() -> new ResourceNotFoundException("Account not found"));
+
+    accountRepository.delete(accountEntity);
+  }
 }

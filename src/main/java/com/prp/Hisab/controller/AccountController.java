@@ -5,11 +5,10 @@ import com.prp.Hisab.domain.dto.response.CreateAccountResponse;
 import com.prp.Hisab.domain.dto.response.ListAccountResponse;
 import com.prp.Hisab.service.AccountService;
 import jakarta.validation.Valid;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,13 +23,18 @@ public class AccountController {
 
     return ResponseEntity.ok(response);
   }
-  
+
   @GetMapping(path = "/{institutionId}")
-  ResponseEntity<ListAccountResponse> listAccount(
-          @PathVariable UUID institutionId
-  ){
+  ResponseEntity<ListAccountResponse> listAccount(@PathVariable UUID institutionId) {
     ListAccountResponse response = accountService.listAccounts(institutionId);
-    
+
     return ResponseEntity.ok(response);
+  }
+
+  @DeleteMapping("/{accountId}")
+  ResponseEntity<Void> deleteAccount(@PathVariable UUID accountId) {
+    accountService.deleteAccount(accountId);
+
+    return ResponseEntity.ok().build();
   }
 }
