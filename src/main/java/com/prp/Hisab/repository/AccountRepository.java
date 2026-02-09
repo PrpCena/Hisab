@@ -1,10 +1,14 @@
 package com.prp.Hisab.repository;
 
 import com.prp.Hisab.domain.entity.AccountEntity;
-import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.UUID;
 
-public interface AccountRepository
-        extends JpaRepository<AccountEntity, UUID> {
+import com.prp.Hisab.repository.projection.ListAccountProjection;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface AccountRepository extends JpaRepository<AccountEntity, UUID> {
+    
+    List<ListAccountProjection> findAllByInstitutionId(UUID institutionId);
 }

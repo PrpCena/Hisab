@@ -2,14 +2,14 @@ package com.prp.Hisab.controller;
 
 import com.prp.Hisab.domain.dto.request.CreateAccountRequest;
 import com.prp.Hisab.domain.dto.response.CreateAccountResponse;
+import com.prp.Hisab.domain.dto.response.ListAccountResponse;
 import com.prp.Hisab.service.AccountService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,6 +22,15 @@ public class AccountController {
       @Valid @RequestBody CreateAccountRequest request) {
     CreateAccountResponse response = accountService.createAccount(request);
 
+    return ResponseEntity.ok(response);
+  }
+  
+  @GetMapping(path = "/{institutionId}")
+  ResponseEntity<ListAccountResponse> listAccount(
+          @PathVariable UUID institutionId
+  ){
+    ListAccountResponse response = accountService.listAccounts(institutionId);
+    
     return ResponseEntity.ok(response);
   }
 }
