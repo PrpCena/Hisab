@@ -12,5 +12,6 @@ public interface TagMapper {
 
   @Mapping(target = "parents", ignore = true)
   @Mapping(target = "children", ignore = true)
+  @Mapping(target = "createdBy",  ignore = true)
   TagEntity toEntity(Tag domain);
 }

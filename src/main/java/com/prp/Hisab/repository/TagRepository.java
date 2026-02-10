@@ -1,10 +1,12 @@
 package com.prp.Hisab.repository;
 
 import com.prp.Hisab.domain.entity.TagEntity;
+import com.prp.Hisab.repository.projection.ListTagProjection;
+import java.util.List;
+import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.UUID;
+public interface TagRepository extends JpaRepository<TagEntity, UUID> {
 
-public interface TagRepository
-        extends JpaRepository<TagEntity, UUID> {
+  List<ListTagProjection> findAllByCreatedById(UUID userId);
 }

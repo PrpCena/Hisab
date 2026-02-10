@@ -2,14 +2,12 @@ package com.prp.Hisab.controller;
 
 import com.prp.Hisab.domain.dto.request.CreateTagRequest;
 import com.prp.Hisab.domain.dto.response.CreateTagResponse;
+import com.prp.Hisab.domain.dto.response.ListTagResponse;
 import com.prp.Hisab.service.TagService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,4 +23,11 @@ public class TagController {
     return ResponseEntity.ok().body(response);
   }
   
+  @GetMapping
+  ResponseEntity<ListTagResponse> listTags() {
+    ListTagResponse response = tagService.listTags();
+    
+    return ResponseEntity.ok().body(response);
+    
+  }
 }
