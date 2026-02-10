@@ -26,6 +26,10 @@ public class TagEntity {
   @Column(name = "name", nullable = false)
   private String name;
 
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  @JoinColumn(name = "createdBy", nullable = false)
+  private UserEntity createdBy;
+
   @CreatedDate
   @Column(name = "created")
   private Instant created;
