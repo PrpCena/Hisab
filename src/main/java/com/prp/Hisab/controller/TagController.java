@@ -5,6 +5,7 @@ import com.prp.Hisab.domain.dto.response.CreateTagResponse;
 import com.prp.Hisab.domain.dto.response.ListTagResponse;
 import com.prp.Hisab.service.TagService;
 import jakarta.validation.Valid;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,12 +23,18 @@ public class TagController {
 
     return ResponseEntity.ok().body(response);
   }
-  
+
   @GetMapping
   ResponseEntity<ListTagResponse> listTags() {
     ListTagResponse response = tagService.listTags();
-    
+
     return ResponseEntity.ok().body(response);
-    
+  }
+
+  @DeleteMapping("/{tagId}")
+  ResponseEntity<Void> deleteTag(@PathVariable UUID tagId) {
+    tagService.deleteTag(tagId);
+
+    return ResponseEntity.ok().build();
   }
 }

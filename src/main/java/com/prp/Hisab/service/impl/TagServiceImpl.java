@@ -7,6 +7,7 @@ import com.prp.Hisab.domain.dto.response.CreateTagResponse;
 import com.prp.Hisab.domain.dto.response.ListTagResponse;
 import com.prp.Hisab.domain.entity.TagEntity;
 import com.prp.Hisab.domain.entity.UserEntity;
+import com.prp.Hisab.exception.ResourceNotFoundException;
 import com.prp.Hisab.mapper.TagMapper;
 import com.prp.Hisab.repository.TagRepository;
 import com.prp.Hisab.service.TagService;
@@ -14,6 +15,7 @@ import com.prp.Hisab.service.UserContext;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import java.util.List;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -55,5 +57,18 @@ public class TagServiceImpl implements TagService {
             .toList();
 
     return new ListTagResponse(createTagResponses);
+  }
+
+  @Override
+  @Transactional
+  public void deleteTag(UUID tagId) {
+    User user = userContext.getCurrentUser();
+
+    TagEntity tagEntity =
+        tagRepository
+            .findByIdAndCreatedById(tagId, user.getId())
+            .orElseThrow(() -> new ResourceNotFoundException("Tag not found"));
+
+    tagRepository.delete(tagEntity);
   }
 }
