@@ -13,8 +13,6 @@ import com.prp.Hisab.repository.AccountRepository;
 import com.prp.Hisab.repository.TransactionRepository;
 import com.prp.Hisab.service.TransactionService;
 import com.prp.Hisab.service.UserContext;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -29,8 +27,6 @@ public class TransactionServiceImpl implements TransactionService {
   private final TransactionMapper transactionMapper;
   private final AccountRepository accountRepository;
   private final UserContext userContext;
-
-  @PersistenceContext private EntityManager entityManager;
 
   @Override
   @Transactional
@@ -84,5 +80,18 @@ public class TransactionServiceImpl implements TransactionService {
             .toList();
 
     return new ListTransactionResponse(transactions);
+  }
+
+  @Override
+  @Transactional
+  public void deleteTransaction(UUID transactionId) {
+    User user = userContext.getCurrentUser();
+
+    TransactionEntity transactionEntity =
+        transactionRepository
+            .findByIdAndAccount_Institution_CreatedBy_Id(transactionId, user.getId())
+            .orElseThrow(() -> new ResourceNotFoundException("Transaction not found"));
+
+    transactionRepository.delete(transactionEntity);
   }
 }

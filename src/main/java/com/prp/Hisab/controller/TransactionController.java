@@ -31,4 +31,11 @@ public class TransactionController {
 
     return ResponseEntity.ok(response);
   }
+
+  @DeleteMapping(path = "/{transactionId}")
+  ResponseEntity<Void> deleteTransaction(@PathVariable UUID transactionId) {
+    transactionService.deleteTransaction(transactionId);
+
+    return ResponseEntity.ok().build();
+  }
 }

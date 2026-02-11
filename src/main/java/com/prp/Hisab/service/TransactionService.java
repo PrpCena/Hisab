@@ -11,4 +11,6 @@ public interface TransactionService {
       UUID accountId, @Valid CreateTransactionRequest request);
 
   ListTransactionResponse listTransaction(UUID accountId);
+
+  void deleteTransaction(UUID transactionId);
 }
