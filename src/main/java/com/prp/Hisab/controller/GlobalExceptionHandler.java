@@ -1,6 +1,7 @@
 package com.prp.Hisab.controller;
 
 import com.prp.Hisab.domain.dto.ApiErrorResponse;
+import com.prp.Hisab.exception.DomainException;
 import com.prp.Hisab.exception.HisabException;
 import com.prp.Hisab.exception.ResourceNotFoundException;
 import com.prp.Hisab.exception.UserNotAuthenticatedException;
@@ -62,5 +63,19 @@ public class GlobalExceptionHandler {
             request.getRequestURI(),
             Instant.now());
     return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+  }
+
+  @ExceptionHandler(DomainException.class)
+  @ResponseStatus(HttpStatus.UNPROCESSABLE_CONTENT)
+  public ResponseEntity<ApiErrorResponse> handleDomainException(
+      DomainException ex, HttpServletRequest request) {
+    ApiErrorResponse errorResponse =
+        new ApiErrorResponse(
+            ex.getStatus().value(),
+            ex.getStatus().getReasonPhrase(),
+            ex.getMessage(),
+            request.getRequestURI(),
+            Instant.now());
+    return new ResponseEntity<>(errorResponse, HttpStatus.UNPROCESSABLE_CONTENT);
   }
 }
