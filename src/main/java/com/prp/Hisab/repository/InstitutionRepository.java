@@ -11,6 +11,6 @@ public interface InstitutionRepository extends JpaRepository<InstitutionEntity, 
   List<ListInstitutionProjection> findAllByCreatedById(UUID id);
 
   int deleteByIdAndCreatedById(UUID id, UUID createdById);
-  
-  Optional<InstitutionEntity> findByIdAndCreatedById(UUID id,  UUID createdById);
+
+  Optional<InstitutionEntity> findByIdAndCreatedById(UUID id, UUID createdById);
 }
