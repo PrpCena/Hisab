@@ -18,7 +18,7 @@ public class InstitutionController {
 
   private final InstitutionService institutionService;
 
-  @PutMapping
+  @PostMapping
   ResponseEntity<CreateInstitutionResponse> createInstitution(
       @Valid @RequestBody CreateInstitutionRequest request) {
 
