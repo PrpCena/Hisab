@@ -1,6 +1,7 @@
 package com.prp.Hisab.controller;
 
 import com.prp.Hisab.domain.dto.request.CreateAccountRequest;
+import com.prp.Hisab.domain.dto.request.TransferAccountRequest;
 import com.prp.Hisab.domain.dto.response.CreateAccountResponse;
 import com.prp.Hisab.domain.dto.response.ListAccountResponse;
 import com.prp.Hisab.service.AccountService;
@@ -35,6 +36,13 @@ public class AccountController {
   ResponseEntity<Void> deleteAccount(@PathVariable UUID accountId) {
     accountService.deleteAccount(accountId);
 
+    return ResponseEntity.ok().build();
+  }
+
+  @PutMapping(path = "/{accountId}/transfer")
+  ResponseEntity<Void> transferAccount(
+      @PathVariable UUID accountId, @Valid @RequestBody TransferAccountRequest request) {
+    accountService.transferAccount(accountId, request);
     return ResponseEntity.ok().build();
   }
 }

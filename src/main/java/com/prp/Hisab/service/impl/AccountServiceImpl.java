@@ -3,6 +3,7 @@ package com.prp.Hisab.service.impl;
 import com.prp.Hisab.domain.Account;
 import com.prp.Hisab.domain.User;
 import com.prp.Hisab.domain.dto.request.CreateAccountRequest;
+import com.prp.Hisab.domain.dto.request.TransferAccountRequest;
 import com.prp.Hisab.domain.dto.response.CreateAccountResponse;
 import com.prp.Hisab.domain.dto.response.ListAccountResponse;
 import com.prp.Hisab.domain.entity.AccountEntity;
@@ -87,5 +88,27 @@ public class AccountServiceImpl implements AccountService {
             .orElseThrow(() -> new ResourceNotFoundException("Account not found"));
 
     accountRepository.delete(accountEntity);
+  }
+
+  @Override
+  @Transactional
+  public void transferAccount(UUID accountId, TransferAccountRequest request) {
+    User user = userContext.getCurrentUser();
+
+    AccountEntity entity =
+        accountRepository
+            .findByIdAndInstitution_CreatedBy_Id(accountId, user.getId())
+            .orElseThrow(() -> new ResourceNotFoundException("Account not found"));
+
+    Account domain = accountMapper.toDomain(entity);
+
+    domain.transferAccount(request.institution());
+
+    InstitutionEntity newInstitution =
+        institutionRepository
+            .findByIdAndCreatedById(request.institution(), user.getId())
+            .orElseThrow(() -> new ResourceNotFoundException("Institution not found"));
+
+    entity.setInstitution(newInstitution);
   }
 }

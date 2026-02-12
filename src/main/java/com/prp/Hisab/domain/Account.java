@@ -2,17 +2,26 @@ package com.prp.Hisab.domain;
 
 import com.prp.Hisab.domain.enums.AccountStatus;
 import com.prp.Hisab.domain.enums.AccountType;
-import java.time.Instant;
+import com.prp.Hisab.exception.DomainException;
 import java.util.UUID;
 import lombok.Builder;
-import lombok.Value;
+import lombok.Getter;
 
-@Value
+@Getter
 @Builder
 public class Account {
-  UUID id;
-  Instant created;
-  AccountStatus status;
-  AccountType type;
-  UUID institutionId;
+  private AccountStatus status;
+  private AccountType type;
+  private UUID institution;
+
+  public void transferAccount(UUID institution) {
+
+    if (this.institution.equals(institution)) {
+      throw new DomainException("You can't transfer to the same institution");
+    }
+
+    if (this.status == AccountStatus.CLOSED) {
+      throw new DomainException("You can't transfer a closed account");
+    }
+  }
 }
