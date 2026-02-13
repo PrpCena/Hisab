@@ -2,6 +2,7 @@ package com.prp.Hisab.service.impl;
 
 import com.prp.Hisab.domain.Account;
 import com.prp.Hisab.domain.User;
+import com.prp.Hisab.domain.dto.request.ChangeAccountStatusRequest;
 import com.prp.Hisab.domain.dto.request.ChangeAccountTypeRequest;
 import com.prp.Hisab.domain.dto.request.CreateAccountRequest;
 import com.prp.Hisab.domain.dto.request.TransferAccountRequest;
@@ -127,6 +128,23 @@ public class AccountServiceImpl implements AccountService {
 
     domain.changeType(request.type());
 
+    accountMapper.updateEntity(domain, entity);
+  }
+
+  @Override
+  @Transactional
+  public void changeStatus(UUID accountId, ChangeAccountStatusRequest request) {
+    User user = userContext.getCurrentUser();
+
+    AccountEntity entity =
+        accountRepository
+            .findByIdAndInstitution_CreatedBy_Id(accountId, user.getId())
+            .orElseThrow(() -> new ResourceNotFoundException("Account not found"));
+    
+    Account domain = accountMapper.toDomain(entity);
+    
+    domain.changeStatus(request.status());
+    
     accountMapper.updateEntity(domain, entity);
   }
 }

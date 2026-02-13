@@ -33,4 +33,12 @@ public class Account {
 
     this.type = accountType;
   }
+
+  public void changeStatus(AccountStatus status) {
+    if (this.status.equals(status)) {
+      throw new DomainException("You can't change the status to the same status");
+    }
+
+    this.status = status;
+  }
 }

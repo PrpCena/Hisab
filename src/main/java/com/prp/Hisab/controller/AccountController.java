@@ -1,5 +1,6 @@
 package com.prp.Hisab.controller;
 
+import com.prp.Hisab.domain.dto.request.ChangeAccountStatusRequest;
 import com.prp.Hisab.domain.dto.request.ChangeAccountTypeRequest;
 import com.prp.Hisab.domain.dto.request.CreateAccountRequest;
 import com.prp.Hisab.domain.dto.request.TransferAccountRequest;
@@ -51,6 +52,13 @@ public class AccountController {
   ResponseEntity<Void> changeType(
       @PathVariable UUID accountId, @Valid @RequestBody ChangeAccountTypeRequest request) {
     accountService.changeType(accountId, request);
+    return ResponseEntity.ok().build();
+  }
+  
+  @PutMapping(path = "/{accountId}/changeStatus")
+  ResponseEntity<Void> changeType(
+          @PathVariable UUID accountId, @Valid @RequestBody ChangeAccountStatusRequest request) {
+    accountService.changeStatus(accountId, request);
     return ResponseEntity.ok().build();
   }
 }

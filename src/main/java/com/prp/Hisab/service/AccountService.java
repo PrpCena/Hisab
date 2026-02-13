@@ -1,5 +1,6 @@
 package com.prp.Hisab.service;
 
+import com.prp.Hisab.domain.dto.request.ChangeAccountStatusRequest;
 import com.prp.Hisab.domain.dto.request.ChangeAccountTypeRequest;
 import com.prp.Hisab.domain.dto.request.CreateAccountRequest;
 import com.prp.Hisab.domain.dto.request.TransferAccountRequest;
@@ -19,4 +20,6 @@ public interface AccountService {
   void transferAccount(UUID accountId, @Valid TransferAccountRequest request);
   
   void changeType(UUID accountId, @Valid ChangeAccountTypeRequest request);
+  
+  void changeStatus(UUID accountId, @Valid ChangeAccountStatusRequest request);
 }
