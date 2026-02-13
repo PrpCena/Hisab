@@ -24,4 +24,13 @@ public class Account {
       throw new DomainException("You can't transfer a closed account");
     }
   }
+
+  public void changeType(AccountType accountType) {
+
+    if (this.type.equals(accountType)) {
+      throw new DomainException("You can't change the type to the same type");
+    }
+
+    this.type = accountType;
+  }
 }
