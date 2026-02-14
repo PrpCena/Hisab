@@ -4,22 +4,21 @@ import com.prp.Hisab.domain.dto.request.ChangeAccountStatusRequest;
 import com.prp.Hisab.domain.dto.request.ChangeAccountTypeRequest;
 import com.prp.Hisab.domain.dto.request.CreateAccountRequest;
 import com.prp.Hisab.domain.dto.request.TransferAccountRequest;
-import com.prp.Hisab.domain.dto.response.CreateAccountResponse;
-import com.prp.Hisab.domain.dto.response.ListAccountResponse;
+import com.prp.Hisab.domain.dto.response.AccountResponse;
 import jakarta.validation.Valid;
-
+import java.util.List;
 import java.util.UUID;
 
 public interface AccountService {
-  CreateAccountResponse createAccount(CreateAccountRequest request);
+  AccountResponse createAccount(CreateAccountRequest request);
 
-  ListAccountResponse listAccounts(UUID institutionId);
+  List<AccountResponse> listAccounts(UUID institutionId);
 
   void deleteAccount(UUID accountId);
-  
-  void transferAccount(UUID accountId, @Valid TransferAccountRequest request);
-  
-  void changeType(UUID accountId, @Valid ChangeAccountTypeRequest request);
-  
-  void changeStatus(UUID accountId, @Valid ChangeAccountStatusRequest request);
+
+  AccountResponse transferAccount(UUID accountId, @Valid TransferAccountRequest request);
+
+  AccountResponse changeType(UUID accountId, @Valid ChangeAccountTypeRequest request);
+
+  AccountResponse changeStatus(UUID accountId, @Valid ChangeAccountStatusRequest request);
 }

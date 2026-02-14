@@ -6,8 +6,7 @@ import com.prp.Hisab.domain.dto.request.ChangeAccountStatusRequest;
 import com.prp.Hisab.domain.dto.request.ChangeAccountTypeRequest;
 import com.prp.Hisab.domain.dto.request.CreateAccountRequest;
 import com.prp.Hisab.domain.dto.request.TransferAccountRequest;
-import com.prp.Hisab.domain.dto.response.CreateAccountResponse;
-import com.prp.Hisab.domain.dto.response.ListAccountResponse;
+import com.prp.Hisab.domain.dto.response.AccountResponse;
 import com.prp.Hisab.domain.entity.AccountEntity;
 import com.prp.Hisab.domain.entity.InstitutionEntity;
 import com.prp.Hisab.domain.enums.AccountStatus;
@@ -17,8 +16,6 @@ import com.prp.Hisab.repository.AccountRepository;
 import com.prp.Hisab.repository.InstitutionRepository;
 import com.prp.Hisab.service.AccountService;
 import com.prp.Hisab.service.UserContext;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -34,49 +31,49 @@ public class AccountServiceImpl implements AccountService {
   private final AccountMapper accountMapper;
   private final InstitutionRepository institutionRepository;
 
-  @PersistenceContext private EntityManager entityManager;
-
   @Override
   @Transactional
-  public CreateAccountResponse createAccount(CreateAccountRequest request) {
+  public AccountResponse createAccount(CreateAccountRequest request) {
     User user = userContext.getCurrentUser();
 
-    institutionRepository
-        .findByIdAndCreatedById(request.institutionId(), user.getId())
-        .orElseThrow(() -> new ResourceNotFoundException("Invalid institution to create account"));
+    InstitutionEntity institution =
+        institutionRepository
+            .findByIdAndCreatedById(request.institutionId(), user.getId())
+            .orElseThrow(
+                () -> new ResourceNotFoundException("Invalid institution to create account"));
 
     Account account =
         Account.builder().type(request.accountType()).status(AccountStatus.OPEN).build();
 
     AccountEntity accountEntity = accountMapper.toEntity(account);
 
-    accountEntity.setInstitution(
-        entityManager.getReference(InstitutionEntity.class, request.institutionId()));
+    accountEntity.setInstitution(institution);
 
     accountEntity = accountRepository.save(accountEntity);
 
-    return new CreateAccountResponse(
-        accountEntity.getId(), accountEntity.getType(), accountEntity.getStatus());
+    return new AccountResponse(
+        accountEntity.getId(),
+        request.institutionId(),
+        accountEntity.getType(),
+        accountEntity.getStatus());
   }
 
   @Override
   @Transactional(readOnly = true)
-  public ListAccountResponse listAccounts(UUID institutionId) {
+  public List<AccountResponse> listAccounts(UUID institutionId) {
     User user = userContext.getCurrentUser();
 
-    institutionRepository
-        .findByIdAndCreatedById(institutionId, user.getId())
-        .orElseThrow(() -> new ResourceNotFoundException("Accounts not found"));
-
-    List<CreateAccountResponse> accountDtos =
-        accountRepository.findAllByInstitutionId(institutionId).stream()
-            .map(
-                projection ->
-                    new CreateAccountResponse(
-                        projection.getId(), projection.getType(), projection.getStatus()))
-            .toList();
-
-    return new ListAccountResponse(accountDtos);
+    return accountRepository
+        .findAllByInstitution_IdAndInstitution_CreatedBy_Id(institutionId, user.getId())
+        .stream()
+        .map(
+            projection ->
+                new AccountResponse(
+                    projection.getId(),
+                    institutionId,
+                    projection.getType(),
+                    projection.getStatus()))
+        .toList();
   }
 
   @Override
@@ -94,7 +91,7 @@ public class AccountServiceImpl implements AccountService {
 
   @Override
   @Transactional
-  public void transferAccount(UUID accountId, TransferAccountRequest request) {
+  public AccountResponse transferAccount(UUID accountId, TransferAccountRequest request) {
     User user = userContext.getCurrentUser();
 
     AccountEntity entity =
@@ -112,11 +109,16 @@ public class AccountServiceImpl implements AccountService {
             .orElseThrow(() -> new ResourceNotFoundException("Institution not found"));
 
     entity.setInstitution(newInstitution);
+
+    entity = accountRepository.save(entity);
+
+    return new AccountResponse(
+        entity.getId(), newInstitution.getId(), entity.getType(), entity.getStatus());
   }
 
   @Override
   @Transactional
-  public void changeType(UUID accountId, ChangeAccountTypeRequest request) {
+  public AccountResponse changeType(UUID accountId, ChangeAccountTypeRequest request) {
     User user = userContext.getCurrentUser();
 
     AccountEntity entity =
@@ -129,22 +131,32 @@ public class AccountServiceImpl implements AccountService {
     domain.changeType(request.type());
 
     accountMapper.updateEntity(domain, entity);
+
+    entity = accountRepository.save(entity);
+
+    return new AccountResponse(
+        entity.getId(), domain.getInstitution(), entity.getType(), entity.getStatus());
   }
 
   @Override
   @Transactional
-  public void changeStatus(UUID accountId, ChangeAccountStatusRequest request) {
+  public AccountResponse changeStatus(UUID accountId, ChangeAccountStatusRequest request) {
     User user = userContext.getCurrentUser();
 
     AccountEntity entity =
         accountRepository
             .findByIdAndInstitution_CreatedBy_Id(accountId, user.getId())
             .orElseThrow(() -> new ResourceNotFoundException("Account not found"));
-    
+
     Account domain = accountMapper.toDomain(entity);
-    
+
     domain.changeStatus(request.status());
-    
+
     accountMapper.updateEntity(domain, entity);
+
+    entity = accountRepository.save(entity);
+
+    return new AccountResponse(
+        entity.getId(), domain.getInstitution(), entity.getType(), entity.getStatus());
   }
 }

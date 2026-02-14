@@ -38,10 +38,9 @@ public class TransactionEntity {
 
   @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(
-          name = "transaction_tags",
-          joinColumns = @JoinColumn(name = "transaction_id"),
-          inverseJoinColumns = @JoinColumn(name = "tag_id")
-  )
+      name = "transaction_tags",
+      joinColumns = @JoinColumn(name = "transaction_id"),
+      inverseJoinColumns = @JoinColumn(name = "tag_id"))
   private Set<TagEntity> tags;
 
   @Override

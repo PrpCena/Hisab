@@ -4,10 +4,10 @@ import com.prp.Hisab.domain.dto.request.ChangeAccountStatusRequest;
 import com.prp.Hisab.domain.dto.request.ChangeAccountTypeRequest;
 import com.prp.Hisab.domain.dto.request.CreateAccountRequest;
 import com.prp.Hisab.domain.dto.request.TransferAccountRequest;
-import com.prp.Hisab.domain.dto.response.CreateAccountResponse;
-import com.prp.Hisab.domain.dto.response.ListAccountResponse;
+import com.prp.Hisab.domain.dto.response.AccountResponse;
 import com.prp.Hisab.service.AccountService;
 import jakarta.validation.Valid;
+import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,16 +20,15 @@ public class AccountController {
   private final AccountService accountService;
 
   @PostMapping
-  ResponseEntity<CreateAccountResponse> createAccount(
-      @Valid @RequestBody CreateAccountRequest request) {
-    CreateAccountResponse response = accountService.createAccount(request);
+  ResponseEntity<AccountResponse> createAccount(@Valid @RequestBody CreateAccountRequest request) {
+    AccountResponse response = accountService.createAccount(request);
 
     return ResponseEntity.ok(response);
   }
 
   @GetMapping(path = "/{institutionId}")
-  ResponseEntity<ListAccountResponse> listAccount(@PathVariable UUID institutionId) {
-    ListAccountResponse response = accountService.listAccounts(institutionId);
+  ResponseEntity<List<AccountResponse>> listAccount(@PathVariable UUID institutionId) {
+    List<AccountResponse> response = accountService.listAccounts(institutionId);
 
     return ResponseEntity.ok(response);
   }
@@ -42,23 +41,23 @@ public class AccountController {
   }
 
   @PutMapping(path = "/{accountId}/transfer")
-  ResponseEntity<Void> transferAccount(
+  ResponseEntity<AccountResponse> transferAccount(
       @PathVariable UUID accountId, @Valid @RequestBody TransferAccountRequest request) {
-    accountService.transferAccount(accountId, request);
-    return ResponseEntity.ok().build();
+    AccountResponse response = accountService.transferAccount(accountId, request);
+    return ResponseEntity.ok(response);
   }
 
   @PutMapping(path = "/{accountId}/changeType")
-  ResponseEntity<Void> changeType(
+  ResponseEntity<AccountResponse> changeType(
       @PathVariable UUID accountId, @Valid @RequestBody ChangeAccountTypeRequest request) {
-    accountService.changeType(accountId, request);
-    return ResponseEntity.ok().build();
+    AccountResponse response = accountService.changeType(accountId, request);
+    return ResponseEntity.ok(response);
   }
-  
+
   @PutMapping(path = "/{accountId}/changeStatus")
-  ResponseEntity<Void> changeType(
-          @PathVariable UUID accountId, @Valid @RequestBody ChangeAccountStatusRequest request) {
-    accountService.changeStatus(accountId, request);
-    return ResponseEntity.ok().build();
+  ResponseEntity<AccountResponse> changeType(
+      @PathVariable UUID accountId, @Valid @RequestBody ChangeAccountStatusRequest request) {
+    AccountResponse response = accountService.changeStatus(accountId, request);
+    return ResponseEntity.ok(response);
   }
 }
