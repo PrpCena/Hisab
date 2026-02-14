@@ -3,8 +3,7 @@ package com.prp.Hisab.service.impl;
 import com.prp.Hisab.domain.Tag;
 import com.prp.Hisab.domain.User;
 import com.prp.Hisab.domain.dto.request.CreateTagRequest;
-import com.prp.Hisab.domain.dto.response.CreateTagResponse;
-import com.prp.Hisab.domain.dto.response.ListTagResponse;
+import com.prp.Hisab.domain.dto.response.TagResponse;
 import com.prp.Hisab.domain.entity.TagEntity;
 import com.prp.Hisab.domain.entity.UserEntity;
 import com.prp.Hisab.exception.ResourceNotFoundException;
@@ -32,7 +31,7 @@ public class TagServiceImpl implements TagService {
 
   @Override
   @Transactional
-  public CreateTagResponse createTag(CreateTagRequest request) {
+  public TagResponse createTag(CreateTagRequest request) {
     User user = userContext.getCurrentUser();
 
     Tag tag = Tag.builder().name(request.name()).build();
@@ -43,20 +42,17 @@ public class TagServiceImpl implements TagService {
 
     tagEntity = tagRepository.save(tagEntity);
 
-    return new CreateTagResponse(tagEntity.getId(), tagEntity.getName());
+    return new TagResponse(tagEntity.getId(), tagEntity.getName());
   }
 
   @Override
   @Transactional(readOnly = true)
-  public ListTagResponse listTags() {
+  public List<TagResponse> listTags() {
     User user = userContext.getCurrentUser();
 
-    List<CreateTagResponse> createTagResponses =
-        tagRepository.findAllByCreatedById(user.getId()).stream()
-            .map(projection -> new CreateTagResponse(projection.getId(), projection.getName()))
-            .toList();
-
-    return new ListTagResponse(createTagResponses);
+    return tagRepository.findAllByCreatedById(user.getId()).stream()
+        .map(projection -> new TagResponse(projection.getId(), projection.getName()))
+        .toList();
   }
 
   @Override

@@ -1,10 +1,11 @@
 package com.prp.Hisab.controller;
 
 import com.prp.Hisab.domain.dto.request.CreateTagRequest;
-import com.prp.Hisab.domain.dto.response.CreateTagResponse;
-import com.prp.Hisab.domain.dto.response.ListTagResponse;
+import com.prp.Hisab.domain.dto.response.TagResponse;
 import com.prp.Hisab.service.TagService;
 import jakarta.validation.Valid;
+
+import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,15 +19,15 @@ public class TagController {
   private final TagService tagService;
 
   @PostMapping
-  ResponseEntity<CreateTagResponse> createTag(@Valid @RequestBody CreateTagRequest request) {
-    CreateTagResponse response = tagService.createTag(request);
+  ResponseEntity<TagResponse> createTag(@Valid @RequestBody CreateTagRequest request) {
+    TagResponse response = tagService.createTag(request);
 
     return ResponseEntity.ok().body(response);
   }
 
   @GetMapping
-  ResponseEntity<ListTagResponse> listTags() {
-    ListTagResponse response = tagService.listTags();
+  ResponseEntity<List<TagResponse>> listTags() {
+    List<TagResponse> response = tagService.listTags();
 
     return ResponseEntity.ok().body(response);
   }
