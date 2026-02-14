@@ -2,11 +2,10 @@ package com.prp.Hisab.controller;
 
 import com.prp.Hisab.domain.dto.request.CreateInstitutionRequest;
 import com.prp.Hisab.domain.dto.request.UpdateInstitutionRequest;
-import com.prp.Hisab.domain.dto.response.CreateInstitutionResponse;
-import com.prp.Hisab.domain.dto.response.ListInstitutionResponse;
-import com.prp.Hisab.domain.dto.response.UpdateInstitutionResponse;
+import com.prp.Hisab.domain.dto.response.InstitutionResponse;
 import com.prp.Hisab.service.InstitutionService;
 import jakarta.validation.Valid;
+import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,34 +19,33 @@ public class InstitutionController {
   private final InstitutionService institutionService;
 
   @PostMapping
-  ResponseEntity<CreateInstitutionResponse> createInstitution(
+  ResponseEntity<InstitutionResponse> createInstitution(
       @Valid @RequestBody CreateInstitutionRequest request) {
 
-    CreateInstitutionResponse response = institutionService.createInstitution(request);
+    InstitutionResponse response = institutionService.createInstitution(request);
 
     return ResponseEntity.ok(response);
   }
 
   @GetMapping
-  ResponseEntity<ListInstitutionResponse> listInstitutions() {
+  ResponseEntity<List<InstitutionResponse>> listInstitutions() {
 
-    ListInstitutionResponse response = institutionService.listInstitutions();
+    List<InstitutionResponse> response = institutionService.listInstitutions();
 
     return ResponseEntity.ok(response);
   }
 
-  @DeleteMapping("/{id}")
-  ResponseEntity<Void> deleteInstitution(@PathVariable UUID id) {
-    institutionService.deleteInstitution(id);
+  @DeleteMapping("/{institutionId}")
+  ResponseEntity<Void> deleteInstitution(@PathVariable UUID institutionId) {
+    institutionService.deleteInstitution(institutionId);
 
     return ResponseEntity.ok().build();
   }
 
   @PutMapping(path = "/{institutionId}")
-  ResponseEntity<UpdateInstitutionResponse> updateInstitution(
+  ResponseEntity<InstitutionResponse> updateInstitution(
       @PathVariable UUID institutionId, @Valid @RequestBody UpdateInstitutionRequest request) {
-    UpdateInstitutionResponse response =
-        institutionService.updateInstitution(institutionId, request);
+    InstitutionResponse response = institutionService.updateInstitution(institutionId, request);
 
     return ResponseEntity.ok(response);
   }

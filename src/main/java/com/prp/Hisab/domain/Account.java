@@ -41,9 +41,9 @@ public class Account {
 
     this.status = status;
   }
-  
+
   public void isActive() {
-    if(this.status.equals(AccountStatus.CLOSED)) {
+    if (this.status.equals(AccountStatus.CLOSED)) {
       throw new DomainException("Can not make changes to closed account");
     }
   }

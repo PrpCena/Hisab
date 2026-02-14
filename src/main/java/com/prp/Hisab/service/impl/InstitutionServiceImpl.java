@@ -4,9 +4,7 @@ import com.prp.Hisab.domain.Institution;
 import com.prp.Hisab.domain.User;
 import com.prp.Hisab.domain.dto.request.CreateInstitutionRequest;
 import com.prp.Hisab.domain.dto.request.UpdateInstitutionRequest;
-import com.prp.Hisab.domain.dto.response.CreateInstitutionResponse;
-import com.prp.Hisab.domain.dto.response.ListInstitutionResponse;
-import com.prp.Hisab.domain.dto.response.UpdateInstitutionResponse;
+import com.prp.Hisab.domain.dto.response.InstitutionResponse;
 import com.prp.Hisab.domain.entity.InstitutionEntity;
 import com.prp.Hisab.domain.entity.UserEntity;
 import com.prp.Hisab.exception.ResourceNotFoundException;
@@ -34,7 +32,7 @@ public class InstitutionServiceImpl implements InstitutionService {
 
   @Override
   @Transactional
-  public CreateInstitutionResponse createInstitution(CreateInstitutionRequest request) {
+  public InstitutionResponse createInstitution(CreateInstitutionRequest request) {
     User user = userContext.getCurrentUser();
 
     Institution institution = Institution.builder().name(request.name()).build();
@@ -45,22 +43,17 @@ public class InstitutionServiceImpl implements InstitutionService {
 
     institutionEntity = institutionRepository.save(institutionEntity);
 
-    return new CreateInstitutionResponse(institutionEntity.getId(), institutionEntity.getName());
+    return new InstitutionResponse(institutionEntity.getId(), institutionEntity.getName());
   }
 
   @Override
   @Transactional(readOnly = true)
-  public ListInstitutionResponse listInstitutions() {
+  public List<InstitutionResponse> listInstitutions() {
     User user = userContext.getCurrentUser();
 
-    List<CreateInstitutionResponse> institutionDtos =
-        institutionRepository.findAllByCreatedById(user.getId()).stream()
-            .map(
-                projection ->
-                    new CreateInstitutionResponse(projection.getId(), projection.getName()))
-            .toList();
-
-    return new ListInstitutionResponse(institutionDtos);
+    return institutionRepository.findAllByCreatedById(user.getId()).stream()
+        .map(projection -> new InstitutionResponse(projection.getId(), projection.getName()))
+        .toList();
   }
 
   @Override
@@ -77,7 +70,7 @@ public class InstitutionServiceImpl implements InstitutionService {
 
   @Override
   @Transactional
-  public UpdateInstitutionResponse updateInstitution(
+  public InstitutionResponse updateInstitution(
       UUID institutionId, UpdateInstitutionRequest request) {
     User user = userContext.getCurrentUser();
 
@@ -92,6 +85,8 @@ public class InstitutionServiceImpl implements InstitutionService {
 
     institutionMapper.updateEntity(domain, entity);
 
-    return new UpdateInstitutionResponse(entity.getId(), entity.getName());
+    entity = institutionRepository.save(entity);
+
+    return new InstitutionResponse(entity.getId(), entity.getName());
   }
 }
