@@ -1,18 +1,22 @@
 package com.prp.Hisab.service.impl;
 
+import com.prp.Hisab.domain.Account;
 import com.prp.Hisab.domain.Transaction;
 import com.prp.Hisab.domain.User;
+import com.prp.Hisab.domain.dto.request.ChangeTransactionAccountRequest;
 import com.prp.Hisab.domain.dto.request.CreateTransactionRequest;
 import com.prp.Hisab.domain.dto.response.CreateTransactionResponse;
 import com.prp.Hisab.domain.dto.response.ListTransactionResponse;
 import com.prp.Hisab.domain.entity.AccountEntity;
 import com.prp.Hisab.domain.entity.TransactionEntity;
 import com.prp.Hisab.exception.ResourceNotFoundException;
+import com.prp.Hisab.mapper.AccountMapper;
 import com.prp.Hisab.mapper.TransactionMapper;
 import com.prp.Hisab.repository.AccountRepository;
 import com.prp.Hisab.repository.TransactionRepository;
 import com.prp.Hisab.service.TransactionService;
 import com.prp.Hisab.service.UserContext;
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +31,7 @@ public class TransactionServiceImpl implements TransactionService {
   private final TransactionMapper transactionMapper;
   private final AccountRepository accountRepository;
   private final UserContext userContext;
+  private final AccountMapper accountMapper;
 
   @Override
   @Transactional
@@ -93,5 +98,30 @@ public class TransactionServiceImpl implements TransactionService {
             .orElseThrow(() -> new ResourceNotFoundException("Transaction not found"));
 
     transactionRepository.delete(transactionEntity);
+  }
+
+  @Override
+  @Transactional
+  public void accountChange(UUID transactionId, @Valid ChangeTransactionAccountRequest request) {
+    User user = userContext.getCurrentUser();
+
+    TransactionEntity transactionEntity =
+        transactionRepository
+            .findByIdAndAccount_Institution_CreatedBy_Id(transactionId, user.getId())
+            .orElseThrow(() -> new ResourceNotFoundException("Transaction not found"));
+
+    AccountEntity accountEntity =
+        accountRepository
+            .findByIdAndInstitution_CreatedBy_Id(request.accountId(), user.getId())
+            .orElseThrow(() -> new ResourceNotFoundException("Account not found"));
+
+    Transaction transaction = transactionMapper.toDomain(transactionEntity);
+    Account account = accountMapper.toDomain(accountEntity);
+
+    account.isActive();
+
+    transaction.accountChange(request.accountId());
+
+    transactionEntity.setAccount(accountEntity);
   }
 }

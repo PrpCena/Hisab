@@ -1,5 +1,6 @@
 package com.prp.Hisab.service;
 
+import com.prp.Hisab.domain.dto.request.ChangeTransactionAccountRequest;
 import com.prp.Hisab.domain.dto.request.CreateTransactionRequest;
 import com.prp.Hisab.domain.dto.response.CreateTransactionResponse;
 import com.prp.Hisab.domain.dto.response.ListTransactionResponse;
@@ -13,4 +14,6 @@ public interface TransactionService {
   ListTransactionResponse listTransaction(UUID accountId);
 
   void deleteTransaction(UUID transactionId);
+
+  void accountChange(UUID transactionId, @Valid ChangeTransactionAccountRequest request);
 }

@@ -1,32 +1,29 @@
 package com.prp.Hisab.domain;
 
+import com.prp.Hisab.exception.DomainException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 import lombok.Builder;
-import lombok.Value;
+import lombok.Getter;
 
-@Value
+@Getter
 @Builder
 public class Transaction {
-  UUID id;
-  String description;
-  BigDecimal amount;
-  UUID accountId;
-  LocalDate date;
-  Set<UUID> tagIds = new HashSet<>();
+  private String description;
+  private BigDecimal amount;
+  private UUID accountId;
+  private LocalDate date;
 
-  public void addTag(UUID tagId) {
-    tagIds.add(tagId);
-  }
+  @Builder.Default private Set<UUID> tagIds = new HashSet<>();
 
-  public void removeTag(UUID tagId) {
-    tagIds.remove(tagId);
-  }
+  public void accountChange(UUID accountId) {
+    if (this.accountId.equals(accountId)) {
+      throw new DomainException("Transaction already exists");
+    }
 
-  public Set<UUID> tagIds() {
-    return Set.copyOf(tagIds);
+    this.accountId = accountId;
   }
 }

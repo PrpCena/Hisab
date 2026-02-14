@@ -1,5 +1,6 @@
 package com.prp.Hisab.controller;
 
+import com.prp.Hisab.domain.dto.request.ChangeTransactionAccountRequest;
 import com.prp.Hisab.domain.dto.request.CreateTransactionRequest;
 import com.prp.Hisab.domain.dto.response.CreateTransactionResponse;
 import com.prp.Hisab.domain.dto.response.ListTransactionResponse;
@@ -36,6 +37,14 @@ public class TransactionController {
   ResponseEntity<Void> deleteTransaction(@PathVariable UUID transactionId) {
     transactionService.deleteTransaction(transactionId);
 
+    return ResponseEntity.ok().build();
+  }
+
+  @PutMapping(path = "/{transactionId}/accountChange")
+  ResponseEntity<Void> changeAccount(
+      @PathVariable UUID transactionId,
+      @Valid @RequestBody ChangeTransactionAccountRequest request) {
+    transactionService.accountChange(transactionId, request);
     return ResponseEntity.ok().build();
   }
 }
