@@ -2,10 +2,10 @@ package com.prp.Hisab.controller;
 
 import com.prp.Hisab.domain.dto.request.ChangeTransactionAccountRequest;
 import com.prp.Hisab.domain.dto.request.CreateTransactionRequest;
-import com.prp.Hisab.domain.dto.response.CreateTransactionResponse;
-import com.prp.Hisab.domain.dto.response.ListTransactionResponse;
+import com.prp.Hisab.domain.dto.response.TransactionResponse;
 import com.prp.Hisab.service.TransactionService;
 import jakarta.validation.Valid;
+import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,16 +19,16 @@ public class TransactionController {
   private final TransactionService transactionService;
 
   @PostMapping(path = "/{accountId}")
-  ResponseEntity<CreateTransactionResponse> createTransaction(
+  ResponseEntity<TransactionResponse> createTransaction(
       @PathVariable UUID accountId, @Valid @RequestBody CreateTransactionRequest request) {
-    CreateTransactionResponse response = transactionService.createTransaction(accountId, request);
+    TransactionResponse response = transactionService.createTransaction(accountId, request);
 
     return ResponseEntity.ok(response);
   }
 
   @GetMapping(path = "/{accountId}")
-  ResponseEntity<ListTransactionResponse> listTransactions(@PathVariable UUID accountId) {
-    ListTransactionResponse response = transactionService.listTransaction(accountId);
+  ResponseEntity<List<TransactionResponse>> listTransactions(@PathVariable UUID accountId) {
+    List<TransactionResponse> response = transactionService.listTransaction(accountId);
 
     return ResponseEntity.ok(response);
   }
@@ -41,10 +41,10 @@ public class TransactionController {
   }
 
   @PutMapping(path = "/{transactionId}/accountChange")
-  ResponseEntity<Void> changeAccount(
+  ResponseEntity<TransactionResponse> changeAccount(
       @PathVariable UUID transactionId,
       @Valid @RequestBody ChangeTransactionAccountRequest request) {
-    transactionService.accountChange(transactionId, request);
-    return ResponseEntity.ok().build();
+    TransactionResponse response = transactionService.accountChange(transactionId, request);
+    return ResponseEntity.ok(response);
   }
 }

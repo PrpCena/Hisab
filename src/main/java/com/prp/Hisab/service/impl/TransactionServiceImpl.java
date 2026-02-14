@@ -5,8 +5,7 @@ import com.prp.Hisab.domain.Transaction;
 import com.prp.Hisab.domain.User;
 import com.prp.Hisab.domain.dto.request.ChangeTransactionAccountRequest;
 import com.prp.Hisab.domain.dto.request.CreateTransactionRequest;
-import com.prp.Hisab.domain.dto.response.CreateTransactionResponse;
-import com.prp.Hisab.domain.dto.response.ListTransactionResponse;
+import com.prp.Hisab.domain.dto.response.TransactionResponse;
 import com.prp.Hisab.domain.entity.AccountEntity;
 import com.prp.Hisab.domain.entity.TransactionEntity;
 import com.prp.Hisab.exception.ResourceNotFoundException;
@@ -35,8 +34,7 @@ public class TransactionServiceImpl implements TransactionService {
 
   @Override
   @Transactional
-  public CreateTransactionResponse createTransaction(
-      UUID accountId, CreateTransactionRequest request) {
+  public TransactionResponse createTransaction(UUID accountId, CreateTransactionRequest request) {
     User user = userContext.getCurrentUser();
 
     AccountEntity accountEntity =
@@ -57,34 +55,33 @@ public class TransactionServiceImpl implements TransactionService {
 
     transactionEntity = transactionRepository.save(transactionEntity);
 
-    return new CreateTransactionResponse(
+    return new TransactionResponse(
         transactionEntity.getId(),
         transactionEntity.getAmount(),
         transactionEntity.getDate(),
-        transactionEntity.getDescription());
+        transactionEntity.getDescription(),
+        accountEntity.getId());
   }
 
   @Override
   @Transactional(readOnly = true)
-  public ListTransactionResponse listTransaction(UUID accountId) {
+  public List<TransactionResponse> listTransaction(UUID accountId) {
     User user = userContext.getCurrentUser();
 
     accountRepository
         .findByIdAndInstitution_CreatedBy_Id(accountId, user.getId())
         .orElseThrow(() -> new ResourceNotFoundException("Account not found"));
 
-    List<CreateTransactionResponse> transactions =
-        transactionRepository.findAllByAccountId(accountId).stream()
-            .map(
-                projection ->
-                    new CreateTransactionResponse(
-                        projection.getId(),
-                        projection.getAmount(),
-                        projection.getDate(),
-                        projection.getDescription()))
-            .toList();
-
-    return new ListTransactionResponse(transactions);
+    return transactionRepository.findAllByAccountId(accountId).stream()
+        .map(
+            projection ->
+                new TransactionResponse(
+                    projection.getId(),
+                    projection.getAmount(),
+                    projection.getDate(),
+                    projection.getDescription(),
+                    accountId))
+        .toList();
   }
 
   @Override
@@ -102,7 +99,8 @@ public class TransactionServiceImpl implements TransactionService {
 
   @Override
   @Transactional
-  public void accountChange(UUID transactionId, @Valid ChangeTransactionAccountRequest request) {
+  public TransactionResponse accountChange(
+      UUID transactionId, @Valid ChangeTransactionAccountRequest request) {
     User user = userContext.getCurrentUser();
 
     TransactionEntity transactionEntity =
@@ -123,5 +121,14 @@ public class TransactionServiceImpl implements TransactionService {
     transaction.accountChange(request.accountId());
 
     transactionEntity.setAccount(accountEntity);
+
+    transactionEntity = transactionRepository.save(transactionEntity);
+
+    return new TransactionResponse(
+        transactionEntity.getId(),
+        transactionEntity.getAmount(),
+        transactionEntity.getDate(),
+        transactionEntity.getDescription(),
+        accountEntity.getId());
   }
 }

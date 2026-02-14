@@ -2,18 +2,18 @@ package com.prp.Hisab.service;
 
 import com.prp.Hisab.domain.dto.request.ChangeTransactionAccountRequest;
 import com.prp.Hisab.domain.dto.request.CreateTransactionRequest;
-import com.prp.Hisab.domain.dto.response.CreateTransactionResponse;
-import com.prp.Hisab.domain.dto.response.ListTransactionResponse;
+import com.prp.Hisab.domain.dto.response.TransactionResponse;
 import jakarta.validation.Valid;
+import java.util.List;
 import java.util.UUID;
 
 public interface TransactionService {
-  CreateTransactionResponse createTransaction(
-      UUID accountId, @Valid CreateTransactionRequest request);
+  TransactionResponse createTransaction(UUID accountId, @Valid CreateTransactionRequest request);
 
-  ListTransactionResponse listTransaction(UUID accountId);
+  List<TransactionResponse> listTransaction(UUID accountId);
 
   void deleteTransaction(UUID transactionId);
 
-  void accountChange(UUID transactionId, @Valid ChangeTransactionAccountRequest request);
+  TransactionResponse accountChange(
+      UUID transactionId, @Valid ChangeTransactionAccountRequest request);
 }
