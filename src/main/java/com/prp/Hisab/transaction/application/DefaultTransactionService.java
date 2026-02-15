@@ -5,10 +5,7 @@ import com.prp.Hisab.account.infrastructure.AccountEntity;
 import com.prp.Hisab.account.infrastructure.AccountMapper;
 import com.prp.Hisab.account.infrastructure.AccountRepository;
 import com.prp.Hisab.common.exception.ResourceNotFoundException;
-import com.prp.Hisab.transaction.api.ChangeTransactionAccountRequest;
-import com.prp.Hisab.transaction.api.ChangeTransactionDescriptionRequest;
-import com.prp.Hisab.transaction.api.CreateTransactionRequest;
-import com.prp.Hisab.transaction.api.TransactionResponse;
+import com.prp.Hisab.transaction.api.*;
 import com.prp.Hisab.transaction.domain.Transaction;
 import com.prp.Hisab.transaction.infrastructure.TransactionEntity;
 import com.prp.Hisab.transaction.infrastructure.TransactionMapper;
@@ -145,6 +142,32 @@ public class DefaultTransactionService implements TransactionService {
     Transaction transaction = transactionMapper.toDomain(transactionEntity);
 
     transaction.changeDescription(request.description());
+
+    transactionMapper.updateEntity(transaction, transactionEntity);
+
+    transactionEntity = transactionRepository.save(transactionEntity);
+
+    return new TransactionResponse(
+        transactionEntity.getId(),
+        transactionEntity.getAmount(),
+        transactionEntity.getDate(),
+        transactionEntity.getDescription(),
+        transactionEntity.getAccount().getId());
+  }
+
+  @Override
+  public TransactionResponse changeAmount(
+      UUID transactionId, ChangeTransactionAmountRequest request) {
+    User user = userContext.getCurrentUser();
+
+    TransactionEntity transactionEntity =
+        transactionRepository
+            .findByIdAndAccount_Institution_CreatedBy_Id(transactionId, user.getId())
+            .orElseThrow(() -> new ResourceNotFoundException("Transaction not found"));
+
+    Transaction transaction = transactionMapper.toDomain(transactionEntity);
+
+    transaction.changeAmount(request.amount());
 
     transactionMapper.updateEntity(transaction, transactionEntity);
 

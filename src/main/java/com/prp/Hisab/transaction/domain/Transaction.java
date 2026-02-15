@@ -12,8 +12,15 @@ import lombok.Getter;
 @Getter
 @Builder
 public class Transaction {
+  public static final String ERROR_MESSAGE_INVALID_AMOUNT = "Amount can not be zero";
   private static final int DESCRIPTION_MIN_LENGTH = 3;
   private static final int DESCRIPTION_MAX_LENGTH = 75;
+  public static final String ERROR_MESSAGE_INVALID_DESCRIPTION_LENGTH =
+      "Description length should be between "
+          + DESCRIPTION_MIN_LENGTH
+          + " and "
+          + DESCRIPTION_MAX_LENGTH
+          + " characters";
   private String description;
   private BigDecimal amount;
   private UUID accountId;
@@ -42,5 +49,14 @@ public class Transaction {
     }
 
     this.description = description;
+  }
+
+  public void changeAmount(BigDecimal amount) {
+
+    if (amount.compareTo(BigDecimal.ZERO) == 0) {
+      throw new DomainException(ERROR_MESSAGE_INVALID_AMOUNT);
+    }
+
+    this.amount = amount;
   }
 }
