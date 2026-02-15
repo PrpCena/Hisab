@@ -1,19 +1,20 @@
 package com.prp.Hisab.transaction.application;
 
 import com.prp.Hisab.account.domain.Account;
-import com.prp.Hisab.transaction.domain.Transaction;
-import com.prp.Hisab.user.domain.User;
+import com.prp.Hisab.account.infrastructure.AccountEntity;
+import com.prp.Hisab.account.infrastructure.AccountMapper;
+import com.prp.Hisab.account.infrastructure.AccountRepository;
+import com.prp.Hisab.common.exception.ResourceNotFoundException;
 import com.prp.Hisab.transaction.api.ChangeTransactionAccountRequest;
+import com.prp.Hisab.transaction.api.ChangeTransactionDescriptionRequest;
 import com.prp.Hisab.transaction.api.CreateTransactionRequest;
 import com.prp.Hisab.transaction.api.TransactionResponse;
-import com.prp.Hisab.account.infrastructure.AccountEntity;
+import com.prp.Hisab.transaction.domain.Transaction;
 import com.prp.Hisab.transaction.infrastructure.TransactionEntity;
-import com.prp.Hisab.common.exception.ResourceNotFoundException;
-import com.prp.Hisab.account.infrastructure.AccountMapper;
 import com.prp.Hisab.transaction.infrastructure.TransactionMapper;
-import com.prp.Hisab.account.infrastructure.AccountRepository;
 import com.prp.Hisab.transaction.infrastructure.TransactionRepository;
 import com.prp.Hisab.user.application.UserContext;
+import com.prp.Hisab.user.domain.User;
 import jakarta.validation.Valid;
 import java.util.List;
 import java.util.UUID;
@@ -129,5 +130,31 @@ public class DefaultTransactionService implements TransactionService {
         transactionEntity.getDate(),
         transactionEntity.getDescription(),
         accountEntity.getId());
+  }
+
+  @Override
+  public TransactionResponse changeDescription(
+      UUID transactionId, ChangeTransactionDescriptionRequest request) {
+    User user = userContext.getCurrentUser();
+
+    TransactionEntity transactionEntity =
+        transactionRepository
+            .findByIdAndAccount_Institution_CreatedBy_Id(transactionId, user.getId())
+            .orElseThrow(() -> new ResourceNotFoundException("Transaction not found"));
+
+    Transaction transaction = transactionMapper.toDomain(transactionEntity);
+
+    transaction.changeDescription(request.description());
+
+    transactionMapper.updateEntity(transaction, transactionEntity);
+
+    transactionEntity = transactionRepository.save(transactionEntity);
+
+    return new TransactionResponse(
+        transactionEntity.getId(),
+        transactionEntity.getAmount(),
+        transactionEntity.getDate(),
+        transactionEntity.getDescription(),
+        transactionEntity.getAccount().getId());
   }
 }

@@ -1,6 +1,7 @@
 package com.prp.Hisab.transaction.application;
 
 import com.prp.Hisab.transaction.api.ChangeTransactionAccountRequest;
+import com.prp.Hisab.transaction.api.ChangeTransactionDescriptionRequest;
 import com.prp.Hisab.transaction.api.CreateTransactionRequest;
 import com.prp.Hisab.transaction.api.TransactionResponse;
 import jakarta.validation.Valid;
@@ -16,4 +17,7 @@ public interface TransactionService {
 
   TransactionResponse accountChange(
       UUID transactionId, @Valid ChangeTransactionAccountRequest request);
+
+  TransactionResponse changeDescription(
+      UUID transactionId, @Valid ChangeTransactionDescriptionRequest request);
 }

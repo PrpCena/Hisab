@@ -42,6 +42,16 @@ public class TransactionController {
       @PathVariable UUID transactionId,
       @Valid @RequestBody ChangeTransactionAccountRequest request) {
     TransactionResponse response = transactionService.accountChange(transactionId, request);
+
+    return ResponseEntity.ok(response);
+  }
+
+  @PutMapping(path = "/{transactionId}/descriptionChange")
+  ResponseEntity<TransactionResponse> changeDescription(
+      @PathVariable UUID transactionId,
+      @Valid @RequestBody ChangeTransactionDescriptionRequest request) {
+    TransactionResponse response = transactionService.changeDescription(transactionId, request);
+
     return ResponseEntity.ok(response);
   }
 }
